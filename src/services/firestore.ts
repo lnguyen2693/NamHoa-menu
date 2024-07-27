@@ -12,7 +12,6 @@ export const menuItemConverter = {
       category: menuItem.category,
       price: menuItem.price,
       image: menuItem.image,
-      addresses: menuItem.addresses,
       options: menuItem.options,
     };
   },
@@ -23,7 +22,6 @@ export const menuItemConverter = {
       category: data.category,
       price: data.price,
       image: data.image,
-      addresses: data.addresses,
       options: data.options,
     } as MenuItem;
   },

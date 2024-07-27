@@ -1,7 +1,7 @@
 /**
 restaurants (collection):
   NamHoa:
-    addresses: string
+    address: string
     contact: 
 
     menu (collection):
@@ -47,8 +47,8 @@ export interface Restaurant {
   name: string;
   address: string;
   contact: {
-    number: string,
-  }
+    number: string;
+  };
   // menu (collection)
   // orders (collection)
 }
@@ -64,9 +64,8 @@ interface ItemOption {
 export interface MenuItem {
   name: string;
   category: string;
-  price: string;
+  price: number;
   image?: string;
-  addresses: string[];
   options?: ItemOption;
 }
 
