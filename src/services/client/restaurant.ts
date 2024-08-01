@@ -1,5 +1,6 @@
 import db from "../../../firebase";
 import { Restaurant } from "@interfaces/db";
+import { IdentifiableRestaurant } from "@interfaces/type";
 import { restaurantConverter } from "@services/firestore";
 import {
   addDoc,
@@ -8,69 +9,58 @@ import {
   deleteDoc,
   doc,
   DocumentReference,
+  getDoc,
   PartialWithFieldValue,
   updateDoc,
 } from "firebase/firestore";
 
 export const addRestaurant = async (restaurant: Restaurant) => {
-  try {
-    const restaurantCollection: CollectionReference = collection(
-      db,
-      `restaurants`
-    ).withConverter(restaurantConverter);
+  const restaurantCollection: CollectionReference = collection(
+    db,
+    `restaurants`
+  ).withConverter(restaurantConverter);
 
-    const restaurantDoc = await addDoc(restaurantCollection, restaurant);
-    console.log("new restaurant created: ", restaurantDoc.id);
+  const restaurantDoc = await addDoc(restaurantCollection, restaurant);
+  console.log("new restaurant created: ", restaurantDoc.id);
 
-    return restaurantDoc;
-  } catch (error) {
-    console.log("Error creating restaurant: ", error);
-  }
+  return { id: restaurantDoc.id, ...restaurant } as IdentifiableRestaurant;
 };
 
 export const updateRestaurant = async (
-  data: PartialWithFieldValue<Restaurant>,
-  restaurantID: string
+  restaurant: IdentifiableRestaurant
+  // restaurantID: string
 ) => {
-  try {
-    const restaurantDoc: DocumentReference = doc(
-      db,
-      `restaurants/${restaurantID}`
-    ).withConverter(restaurantConverter);
+  const restaurantDoc: DocumentReference = doc(
+    db,
+    `restaurants/${restaurant.id}`
+  ).withConverter(restaurantConverter);
 
-    await updateDoc(restaurantDoc, data);
-    console.log("restaurant updated: ", restaurantDoc.id);
+  const { id, ...res } = restaurant;
 
-    return restaurantDoc;
-  } catch (error) {
-    console.log("Error updating restaurant: ", error);
-  }
+  await updateDoc(restaurantDoc, res);
+  console.log("restaurant updated: ", restaurantDoc.id);
+
+  return restaurant;
 };
 
 export const getRestaurant = async (restaurantID: string) => {
-  try {
-    const restaurantDoc: DocumentReference = doc(
-      db,
-      `restaurants/${restaurantID}`
-    ).withConverter(restaurantConverter);
-    console.log("get restaurant: ", restaurantDoc.id);
+  const restaurantDoc = await getDoc(
+    doc(db, `restaurants/${restaurantID}`).withConverter(restaurantConverter)
+  );
+  console.log("get restaurant: ", restaurantDoc.id);
 
-    return restaurantDoc;
-  } catch (error) {
-    console.log("Error getting restaurant: ", error);
-  }
+  return {
+    id: restaurantDoc.id,
+    ...restaurantDoc.data(),
+  } as IdentifiableRestaurant;
 };
 
 export const deleteRestaurant = async (restaurantID: string) => {
-  try {
-    const restaurantDoc: DocumentReference = doc(
-      db,
-      `restaurants/${restaurantID}`
-    ).withConverter(restaurantConverter);
-    console.log("restaurant: ", restaurantDoc.id);
+  const restaurantDoc: DocumentReference = doc(
+    db,
+    `restaurants/${restaurantID}`
+  ).withConverter(restaurantConverter);
+  console.log("restaurant: ", restaurantDoc.id);
 
-    await deleteDoc(restaurantDoc);
-  } catch (error) {
-    console.log("Error deleting restaurant", error);
-  }
+  await deleteDoc(restaurantDoc);
 };
