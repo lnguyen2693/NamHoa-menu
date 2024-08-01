@@ -4,90 +4,79 @@ import {
   collection,
   deleteDoc,
   doc,
+  getDoc,
   PartialWithFieldValue,
   updateDoc,
 } from "firebase/firestore";
 import db from "../../../firebase";
 import { menuItemConverter } from "@services/firestore";
+import { IdentifiableMenuItem } from "@interfaces/type";
 
 type AddMenuItem = Pick<MenuItem, "category" | "name" | "price"> &
   PartialWithFieldValue<MenuItem>;
 
-export const addMenuItem = async (
-  menuItem: AddMenuItem,
-  restaurantID: string
-) => {
-  try {
-    const menuCollection = collection(
-      db,
-      `restaurants/${restaurantID}/menu`
-    ).withConverter(menuItemConverter);
+export const addMenuItem = async (menuItem: MenuItem, restaurantID: string) => {
+  const menuCollection = collection(
+    db,
+    `restaurants/${restaurantID}/menu`
+  ).withConverter(menuItemConverter);
 
-    const newMenuItem: AddMenuItem = {
-      name: menuItem.name,
-      category: menuItem.category,
-      price: menuItem.price,
-      image: menuItem.image ?? "",
-      options: menuItem.options ?? {},
-    };
+  // const newMenuItem: AddMenuItem = {
+  //   name: menuItem.name,
+  //   category: menuItem.category,
+  //   available: true,
+  //   price: menuItem.price,
+  //   image: menuItem.image ?? "",
+  //   options: menuItem.options ?? {},
+  // };
 
-    const menuItemDoc = await addDoc(menuCollection, newMenuItem);
-    console.log("new menuItem added: ", menuItemDoc.id);
+  const menuItemDoc = await addDoc(menuCollection, menuItem);
+  console.log("new menuItem added: ", menuItemDoc.id);
 
-    return menuItemDoc;
-  } catch (error) {
-    console.log("Error adding new menu item: ", error);
-  }
+  return { id: menuItemDoc.id, ...menuItem } as IdentifiableMenuItem;
 };
 
 export const updateMenuItem = async (
-  data: PartialWithFieldValue<MenuItem>,
-  restaurantID: string,
-  menuItemID: string
+  menuItem: IdentifiableMenuItem,
+  restaurantID: string
 ) => {
-  try {
-    const menuItemDoc = doc(
-      db,
-      `restaurants/${restaurantID}/menu/${menuItemID}`
-    ).withConverter(menuItemConverter);
+  const menuItemDoc = doc(
+    db,
+    `restaurants/${restaurantID}/menu/${menuItem.id}`
+  ).withConverter(menuItemConverter);
 
-    await updateDoc(menuItemDoc, data);
-    console.log("menuItem updated: ", menuItemDoc.id);
+  const { id, ...res } = menuItem;
 
-    return menuItemDoc;
-  } catch (error) {
-    console.log("Error updating menu item: ", error);
-  }
+  await updateDoc(menuItemDoc, res);
+  console.log("menuItem updated: ", menuItemDoc.id);
+
+  return menuItem;
 };
 
 export const getMenuItem = async (restaurantID: string, menuItemID: string) => {
-  try {
-    const menuItemDoc = doc(
-      db,
-      `restaurants/${restaurantID}/menu/${menuItemID}`
-    ).withConverter(menuItemConverter);
-    console.log("menuItem: ", menuItemDoc.id);
+  const menuItemDoc = await getDoc(
+    doc(db, `restaurants/${restaurantID}/menu/${menuItemID}`).withConverter(
+      menuItemConverter
+    )
+  );
+  console.log("menuItem: ", menuItemDoc.id);
 
-    return menuItemDoc;
-  } catch (error) {
-    console.log("Error getting menu item: ", error);
-  }
+  return {
+    id: menuItemDoc.id,
+    ...menuItemDoc.data(),
+  } as IdentifiableMenuItem;
 };
 
 export const deleteMenuItem = async (
   restaurantID: string,
   menuItemID: string
 ) => {
-  try {
-    const menuItemDoc = doc(
-      db,
-      `restaurants/${restaurantID}/menu/${menuItemID}`
-    ).withConverter(menuItemConverter);
+  const menuItemDoc = doc(
+    db,
+    `restaurants/${restaurantID}/menu/${menuItemID}`
+  ).withConverter(menuItemConverter);
 
-    await deleteDoc(menuItemDoc);
+  await deleteDoc(menuItemDoc);
 
-    console.log("menuItem deleted");
-  } catch (error) {
-    console.log("Error deleting menu item: ", error);
-  }
+  console.log("menuItem deleted");
 };
