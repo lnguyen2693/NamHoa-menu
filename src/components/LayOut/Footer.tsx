@@ -1,9 +1,16 @@
-import { Card, CardMedia } from "@mui/material";
-import { theme } from "../../../theme";
+import { RestaurantContext } from "@context/RestaurantProvider";
+import { Card, CardMedia, useTheme } from "@mui/material";
+import React from "react";
+// import { theme } from "../../../theme";
 import { HiMapPin } from "react-icons/hi2";
 import { MdPhoneIphone } from "react-icons/md";
 
 const Footer = () => {
+  const theme = useTheme();
+  const context = React.useContext(RestaurantContext);
+
+  console.log(context);
+
   return (
     <>
       <Card style={{ padding: "10px" }}>
@@ -41,7 +48,8 @@ const Footer = () => {
               }}
             />
             <div style={{ fontSize: "0.8rem" }}>
-              74 Nguyen Co Thach Street, An Loi Dong Ward, Thu Duc City{" "}
+              {context.restaurant.address}
+              {/* 74 Nguyen Co Thach Street, An Loi Dong Ward, Thu Duc City{" "} */}
             </div>
           </div>
 
@@ -59,7 +67,10 @@ const Footer = () => {
               }}
             />
 
-            <div style={{ fontSize: "0.8rem" }}>0964 777 803</div>
+            <div style={{ fontSize: "0.8rem" }}>
+              {context.restaurant.contact.number}
+              {/* 0964 777 803 */}
+              </div>
           </div>
         </div>
         {/* </Card> */}

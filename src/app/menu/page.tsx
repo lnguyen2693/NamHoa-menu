@@ -1,6 +1,9 @@
-import { dividerClasses } from "@mui/material";
+// import { dividerClasses } from "@mui/material";
 
 export default function Menu() {
 
-  return (<div>hahaha</div>);
+  return (<div>
+    {/* <Header></Header> */}
+    mainnn menu page
+    </div>);
 }

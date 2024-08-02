@@ -5,12 +5,13 @@ import {
   deleteDoc,
   doc,
   getDoc,
+  getDocs,
   PartialWithFieldValue,
   updateDoc,
 } from "firebase/firestore";
 import db from "../../../firebase";
 import { menuItemConverter } from "@services/firestore";
-import { IdentifiableMenuItem } from "@interfaces/type";
+import { IdentifiableMenuItem, IdentifiableMenuItems } from "@interfaces/type";
 
 type AddMenuItem = Pick<MenuItem, "category" | "name" | "price"> &
   PartialWithFieldValue<MenuItem>;
@@ -65,6 +66,21 @@ export const getMenuItem = async (restaurantID: string, menuItemID: string) => {
     id: menuItemDoc.id,
     ...menuItemDoc.data(),
   } as IdentifiableMenuItem;
+};
+
+export const getMenuItems = async (restaurantID: string) => {
+  const menuDocs = await getDocs(
+    collection(db, `restaurants/${restaurantID}/menu`).withConverter(
+      menuItemConverter
+    )
+  );
+
+  const menuItems: IdentifiableMenuItems = menuDocs.docs.map((doc) => ({
+    id: doc.id,
+    ...doc.data(),
+  }));
+
+  return menuItems;
 };
 
 export const deleteMenuItem = async (
