@@ -1,6 +1,6 @@
 "use client";
 import { Footer } from "@components/LayOut";
-import CartProvider from "@context/CartProvider";
+// import CartProvider from "@context/CartProvider";
 import RestaurantProvider from "@context/RestaurantProvider";
 
 const PublicLayout = ({
@@ -12,10 +12,10 @@ const PublicLayout = ({
     <RestaurantProvider
       restaurantId="YhG2Rp1FVTHKIVfkDDO5"
     >
-      <CartProvider>
+      {/* <CartProvider> */}
         {children}
         <Footer />
-      </CartProvider>
+      {/* </CartProvider> */}
     </RestaurantProvider>
   );
 };
