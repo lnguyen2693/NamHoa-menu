@@ -53,9 +53,9 @@ export interface Restaurant {
   // orders (collection)
 }
 
-interface ItemOption {
+export interface ItemOption {
   [key: string]: {
-    choice: string;
+    choice: string[];
     required: boolean;
     multipleChoice: boolean;
   };
@@ -65,9 +65,9 @@ export interface MenuItem {
   name: string;
   category: string;
   // available: true;
-  price: number;
+  price: string;
   image?: string;
-  options?: ItemOption;
+  options: ItemOption;
 }
 
 export interface Order {

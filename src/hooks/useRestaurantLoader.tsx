@@ -36,18 +36,18 @@ export const useRestaurantLoader = (props: useRestaurantLoaderProps) => {
         restaurantConverter
       ),
       (snapshot) => {
-        console.log("onSnapshot: ", snapshot.data());
         if (snapshot.exists()) {
-          setValue({ id: props.restaurantId, ...snapshot.data() });
+          setValue({
+            id: props.restaurantId,
+            ...snapshot.data(),
+          } as IdentifiableRestaurant);
         }
       }
     );
 
     unsubscriber.current = unsubscribe;
 
-    return () => {
-      if (unsubscriber.current != null) unsubscriber.current();
-    };
+    return () => unsubscribe();
   }, [state.state]);
 
   return { restaurant: state };

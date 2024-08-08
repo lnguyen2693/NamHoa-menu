@@ -8,8 +8,6 @@ const Footer = () => {
   const theme = useTheme();
   const context = React.useContext(RestaurantContext);
 
-  console.log(context);
-
   return (
     <>
       <Card style={{ padding: "10px" }}>

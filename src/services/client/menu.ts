@@ -6,30 +6,17 @@ import {
   doc,
   getDoc,
   getDocs,
-  PartialWithFieldValue,
   updateDoc,
 } from "firebase/firestore";
 import db from "../../../firebase";
 import { menuItemConverter } from "@services/firestore";
 import { IdentifiableMenuItem, IdentifiableMenuItems } from "@interfaces/type";
 
-type AddMenuItem = Pick<MenuItem, "category" | "name" | "price"> &
-  PartialWithFieldValue<MenuItem>;
-
 export const addMenuItem = async (menuItem: MenuItem, restaurantID: string) => {
   const menuCollection = collection(
     db,
     `restaurants/${restaurantID}/menu`
   ).withConverter(menuItemConverter);
-
-  // const newMenuItem: AddMenuItem = {
-  //   name: menuItem.name,
-  //   category: menuItem.category,
-  //   available: true,
-  //   price: menuItem.price,
-  //   image: menuItem.image ?? "",
-  //   options: menuItem.options ?? {},
-  // };
 
   const menuItemDoc = await addDoc(menuCollection, menuItem);
   console.log("new menuItem added: ", menuItemDoc.id);

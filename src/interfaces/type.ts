@@ -11,3 +11,5 @@ export type IdentifiableMenuItem = Identifiable<MenuItem>;
 export type IdentifiableMenuItems = IdentifiableMenuItem[];
 
 export type IdentifiableOrder = Identifiable<Order>;
+
+export type IdentifiableOrders = IdentifiableOrder[]
