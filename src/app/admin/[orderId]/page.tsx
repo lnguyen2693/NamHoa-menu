@@ -20,7 +20,7 @@ const Page = (props: Props) => {
     ordersListContext.orders.find((order) => order.id === props.params.orderId)!
   );
 
-  console.log("ordersListContext: ", ordersListContext.orders)
+  // console.log("ordersListContext: ", ordersListContext.orders);
 
   React.useEffect(() => {
     setOrder(
@@ -29,7 +29,7 @@ const Page = (props: Props) => {
       )
     );
     console.log("cart in page:", cartContext.cart);
-  }, [ordersListContext.orders]);
+  }, [ordersListContext.orders, props.params.orderId]);
 
   // const order = ordersListContext.orders.find((order) => order.id === orderId)!;
   console.log("page", cartContext.cart);
@@ -42,7 +42,9 @@ const Page = (props: Props) => {
   return (
     // <OrdersProvider restaurantId="YhG2Rp1FVTHKIVfkDDO5">
     <CartProvider cart={order}>
-      <div>asd {order.id} {order.table}</div>
+      <div>
+        asd {order.id} {order.table}
+      </div>
     </CartProvider>
     // </OrdersProvider>
   );

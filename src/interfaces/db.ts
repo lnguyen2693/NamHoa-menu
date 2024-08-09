@@ -64,8 +64,8 @@ export interface ItemOption {
 export interface MenuItem {
   name: string;
   category: string;
-  // available: true;
-  price: string;
+  available: boolean;
+  price: number;
   image?: string;
   options: ItemOption;
 }

@@ -19,7 +19,7 @@ export const useOrdersLoader = (props: useOrdersLoaderProps) => {
     getOrders(props.restaurantId).then((value) => {
       setValue(value);
     });
-  }, []);
+  }, [props.restaurantId]);
 
   React.useEffect(() => {
     if (state.state !== State.SUCCESS) {
@@ -42,7 +42,7 @@ export const useOrdersLoader = (props: useOrdersLoaderProps) => {
             ...order.data(),
           });
         });
-        
+
         setValue(ordersList);
       }
     );
@@ -50,7 +50,7 @@ export const useOrdersLoader = (props: useOrdersLoaderProps) => {
     unsubscriber.current = unsubscribe;
 
     return () => unsubscribe();
-  }, [state.state]);
+  }, [state.state, props.restaurantId]);
 
   return { orders: state };
 };

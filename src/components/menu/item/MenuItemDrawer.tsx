@@ -7,6 +7,9 @@ import { IdentifiableMenuItem } from "@interfaces/type";
 import { TbCurrencyDong } from "react-icons/tb";
 import { height, width } from "@mui/system";
 import { SingleChoice } from "./itemOptions/SingleChoice";
+import { IoMdAdd } from "react-icons/io";
+import { IoAddSharp } from "react-icons/io5";
+import { MultipleChoice } from "./itemOptions/MultipleChoice";
 
 // /app/page.tsx -> /
 // /app/menu/page.tsx -> /menu
@@ -21,15 +24,6 @@ export const MenuItemDrawer = (props: menuItemDrawerProps) => {
   const [open, setOpen] = React.useState(false);
   const [selectedOptions, setSelectedOptions] = React.useState({});
 
-  // let { [key: string] : any } = props.menuItem.options
-  let options = [];
-  for (const opt in props.menuItem.options) {
-    console.log(props.menuItem.options[opt]);
-    options.push(opt);
-  }
-
-  // console.log("haha", Object.entries(props.menuItem.options));
-
   return (
     <div style={{ position: "absolute", zIndex: "1", bottom: 8, right: 7 }}>
       <button
@@ -39,10 +33,14 @@ export const MenuItemDrawer = (props: menuItemDrawerProps) => {
           borderRadius: 100,
           border: "none",
           boxShadow: "0.1rem 0.1rem 1rem",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
         }}
         onClick={() => setOpen(true)}
+        disabled={!props.menuItem.available}
       >
-        aa
+        <IoMdAdd size={22} />
       </button>
       <Global
         styles={{
@@ -80,27 +78,29 @@ export const MenuItemDrawer = (props: menuItemDrawerProps) => {
         >
           <div style={{ fontSize: "2rem" }}>{props.menuItem.name}</div>
           <div>
-            {props.menuItem.price}
-            {/* {(63200).toLocaleString("en-US", {
+            {/* {props.menuItem.price} */}
+            {props.menuItem.price.toLocaleString("en-US", {
               style: "currency",
               currency: "VND",
-            })} */}
-            <TbCurrencyDong />
+            })}
           </div>
 
           <div style={{ display: "flexbox" }}>
-            {Object.keys(props.menuItem.options).map((key) => (
-              <SingleChoice keyItem={key} option={props.menuItem.options[key]} />
-            ))}
-            {/* {Object.entries(props.menuItem.options).map((option) =>
-              option[1].multipleChoice ? (
-                <div>multiple choice</div>
+            {Object.keys(props.menuItem.options).map((key) =>
+              props.menuItem.options[key].multipleChoice ? (
+                <MultipleChoice
+                  key={key}
+                  keyItem={key}
+                  option={props.menuItem.options[key]}
+                ></MultipleChoice>
               ) : (
-                <div>
-                  <SingleChoice option={option}></SingleChoice>
-                </div>
+                <SingleChoice
+                  key={key}
+                  keyItem={key}
+                  option={props.menuItem.options[key]}
+                />
               )
-            )} */}
+            )}
           </div>
         </div>
         <button
@@ -114,6 +114,9 @@ export const MenuItemDrawer = (props: menuItemDrawerProps) => {
             position: "absolute",
             top: 0,
             right: 0,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
           }}
           onClick={() => setOpen(false)}
         >

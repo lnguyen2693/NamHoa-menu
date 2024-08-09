@@ -5,6 +5,7 @@ import {
   ToggleButtonGroup,
   toggleButtonGroupClasses,
 } from "@mui/material";
+import { borderColor } from "@mui/system";
 import React from "react";
 
 interface SingleChoiceProps {
@@ -20,6 +21,12 @@ const StyledToggleButtonGroup = styled(ToggleButtonGroup)({
     textTransform: "none",
   },
 });
+
+const StylesToggleButton = styled(ToggleButton)({
+  border: 1,
+  borderColor: "black",
+  
+})
 
 export const SingleChoice = (props: SingleChoiceProps) => {
   const { keyItem, option } = props;
@@ -43,9 +50,9 @@ export const SingleChoice = (props: SingleChoiceProps) => {
         onChange={handleChoice}
       >
         {option.choice.map((c) => (
-          <ToggleButton id={c} value={c}>
+          <StylesToggleButton key={c} id={c} value={c}>
             {c}
-          </ToggleButton>
+          </StylesToggleButton>
         ))}
       </StyledToggleButtonGroup>
     </div>
