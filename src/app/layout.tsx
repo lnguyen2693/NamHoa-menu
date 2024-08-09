@@ -3,6 +3,7 @@ import { AppRouterCacheProvider } from "@mui/material-nextjs/v13-appRouter";
 import { ThemeProvider } from "@mui/material";
 import { theme } from "../../theme";
 import CssBaseline from "@mui/material";
+import "../styles/global.css";
 // import '@fontsource/poppins';
 
 export const metadata: Metadata = {
@@ -17,8 +18,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>
-  
+      <body style={{ height: "100vh" }}>
         <AppRouterCacheProvider>
           <ThemeProvider theme={theme}>{children}</ThemeProvider>
         </AppRouterCacheProvider>

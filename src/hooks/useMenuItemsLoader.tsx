@@ -1,4 +1,4 @@
-import { IdentifiableMenuItems } from "@interfaces/type";
+import { IdentifiableMenuItem, IdentifiableMenuItems } from "@interfaces/type";
 import { State, useLoadingValue } from "./utils/useLoadingValue";
 import React from "react";
 import { getMenuItems } from "@services/client/menu";
@@ -43,7 +43,10 @@ export const useMenuItemsLoader = (props: useMenuItemsLoaderProps) => {
         // Think about url design
         let menuItemsList: IdentifiableMenuItems = [];
         snapshot.docs.map((menuItem) => {
-          menuItemsList.push({ id: menuItem.id, ...menuItem.data() });
+          menuItemsList.push({
+            id: menuItem.id,
+            ...menuItem.data(),
+          } as IdentifiableMenuItem);
         });
 
         // console.log(menuItemsList)

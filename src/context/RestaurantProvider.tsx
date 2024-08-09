@@ -1,4 +1,5 @@
 import { MenuItem, Restaurant } from "@interfaces/db";
+import { IdentifiableMenuItems, IdentifiableRestaurant } from "@interfaces/type";
 import { useMenuItemsLoader } from "hooks/useMenuItemsLoader";
 import { useRestaurantLoader } from "hooks/useRestaurantLoader";
 import { State } from "hooks/utils/useLoadingValue";
@@ -10,8 +11,8 @@ interface RestaurantProviderProps {
 }
 
 interface RestaurantContext {
-  restaurant: Restaurant;
-  menuItems: MenuItem[];
+  restaurant: IdentifiableRestaurant;
+  menuItems: IdentifiableMenuItems;
 }
 
 export const RestaurantContext = React.createContext({} as RestaurantContext);
@@ -24,8 +25,6 @@ const RestaurantProvider = (props: RestaurantProviderProps) => {
   const { menuItems } = useMenuItemsLoader({ restaurantId: restaurantId });
 
   if (restaurant.state == State.SUCCESS && menuItems.state == State.SUCCESS) {
-    console.log(restaurant.value);
-    console.log(menuItems.value);
     return (
       <Provider
         value={{ restaurant: restaurant.value, menuItems: menuItems.value }}

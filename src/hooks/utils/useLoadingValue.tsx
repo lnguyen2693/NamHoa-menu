@@ -16,8 +16,10 @@ export const useLoadingValue = <T,>() => {
     state: State.LOADING,
   });
 
-  const setLoadedValue = (value: T) =>
+  const setLoadedValue = (value: T) => {
+    // console.log("setLoadingState", value);
     setLoadingState({ state: State.SUCCESS, value: value });
+  };
 
   const setError = (message?: string) =>
     setLoadingState({ state: State.ERROR, message: message ?? "" });
