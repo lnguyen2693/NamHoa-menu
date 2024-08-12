@@ -1,16 +1,18 @@
 import { ItemOption } from "@interfaces/db";
 import {
+  Box,
   styled,
   ToggleButton,
   ToggleButtonGroup,
   toggleButtonGroupClasses,
 } from "@mui/material";
-import { borderColor } from "@mui/system";
 import React from "react";
 
 interface MultipleChoiceProps {
   keyItem: string;
   option: ItemOption["key"];
+  allOptions: Record<string, string[]>;
+  addOptions: (key: string, choices: string[]) => void;
 }
 
 const StyledToggleButtonGroup = styled(ToggleButtonGroup)({
@@ -28,23 +30,24 @@ const StylesToggleButton = styled(ToggleButton)({
 });
 
 export const MultipleChoice = (props: MultipleChoiceProps) => {
-  const { keyItem, option } = props;
-  const [choice, setChoice] = React.useState([""]);
+  const { keyItem, option, allOptions, addOptions } = props;
 
   const handleChoice = (
     event: React.MouseEvent<HTMLElement>,
     newChoice: string[]
   ) => {
-    setChoice(newChoice);
+    addOptions(keyItem, newChoice);
   };
 
   return (
-    <div>
-      <div>{keyItem}</div>
+    <Box>
+      <Box display="flex" gap={0.5}>
+        {keyItem} {option.required ? <Box color="red">*</Box> : <></>}
+      </Box>
 
       <StyledToggleButtonGroup
         color="secondary"
-        value={choice}
+        value={allOptions[keyItem] ?? []}
         onChange={handleChoice}
       >
         {option.choice.map((c) => (
@@ -53,6 +56,6 @@ export const MultipleChoice = (props: MultipleChoiceProps) => {
           </StylesToggleButton>
         ))}
       </StyledToggleButtonGroup>
-    </div>
+    </Box>
   );
 };

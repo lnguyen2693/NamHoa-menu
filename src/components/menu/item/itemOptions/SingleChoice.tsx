@@ -5,12 +5,14 @@ import {
   ToggleButtonGroup,
   toggleButtonGroupClasses,
 } from "@mui/material";
-import { borderColor } from "@mui/system";
+import { borderColor, Box } from "@mui/system";
 import React from "react";
 
 interface SingleChoiceProps {
   keyItem: string;
   option: ItemOption["key"];
+  allOptions: Record<string, string[]>;
+  addOptions: (key: string, choices: string[]) => void
 }
 
 const StyledToggleButtonGroup = styled(ToggleButtonGroup)({
@@ -25,28 +27,28 @@ const StyledToggleButtonGroup = styled(ToggleButtonGroup)({
 const StylesToggleButton = styled(ToggleButton)({
   border: 1,
   borderColor: "black",
-  
-})
+});
 
 export const SingleChoice = (props: SingleChoiceProps) => {
-  const { keyItem, option } = props;
-  const [choice, setChoice] = React.useState([""]);
+  const { keyItem, option, allOptions, addOptions } = props;
 
   const handleChoice = (
     event: React.MouseEvent<HTMLElement>,
     newChoice: string[]
   ) => {
-    setChoice(newChoice);
+    addOptions(keyItem, newChoice);
   };
 
   return (
-    <div>
-      <div>{keyItem}</div>
+    <Box>
+      <Box display="flex" gap={0.5}>
+        {keyItem} {option.required ? <Box color="red">*</Box> : <></>}
+      </Box>
 
       <StyledToggleButtonGroup
         color="secondary"
         exclusive
-        value={choice}
+        value={allOptions[keyItem] ?? []}
         onChange={handleChoice}
       >
         {option.choice.map((c) => (
@@ -55,6 +57,6 @@ export const SingleChoice = (props: SingleChoiceProps) => {
           </StylesToggleButton>
         ))}
       </StyledToggleButtonGroup>
-    </div>
+    </Box>
   );
 };
