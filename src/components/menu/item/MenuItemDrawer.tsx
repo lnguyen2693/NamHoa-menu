@@ -9,10 +9,9 @@ import { IoMdAdd } from "react-icons/io";
 import { IoMdRemove } from "react-icons/io";
 import { MultipleChoice } from "./itemOptions/MultipleChoice";
 import { LuDot } from "react-icons/lu";
-import { AddItemToCart } from "utils/Order";
+import { addItemToCart } from "utils/Order";
 import { CartContext } from "@context/CartProvider";
-
-
+import { useSearchParams } from "next/navigation";
 
 // /app/page.tsx -> /
 // /app/menu/page.tsx -> /menu
@@ -24,6 +23,9 @@ interface menuItemDrawerProps {
 }
 
 export const MenuItemDrawer = (props: menuItemDrawerProps) => {
+  const searchParams = useSearchParams();
+  const table = searchParams.get("table");
+
   const { menuItem } = props;
   const [open, setOpen] = React.useState(false);
   const [amount, setAmount] = React.useState(0);
@@ -55,7 +57,7 @@ export const MenuItemDrawer = (props: menuItemDrawerProps) => {
     const unsatisfied = requirement.filter(
       (key) => options[key] == undefined || options[key].length === 0
     );
-    setAddButton(unsatisfied.length !== 0 || amount === 0);
+    setAddButton(unsatisfied.length !== 0 || amount === 0 || table === null);
   }, [amount, options]);
 
   return (
@@ -226,7 +228,9 @@ export const MenuItemDrawer = (props: menuItemDrawerProps) => {
               borderRadius: 100,
               fontSize: 18,
             }}
-            onClick={() => AddItemToCart(cartContext, menuItem, amount, options)}
+            onClick={() =>
+              addItemToCart(cartContext, menuItem, amount, options)
+            }
           >
             Them {amount} vao gio hang <LuDot />
             {(props.menuItem.price * amount).toLocaleString("en-US", {

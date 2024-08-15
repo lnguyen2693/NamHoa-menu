@@ -44,13 +44,13 @@ export const MenuBoard = () => {
   };
 
   return (
-    <Box position="relative">
+    <Box position="relative" top={0}>
       <Tabs
         value={selectedTab}
         onChange={onTabSelected}
         style={{
           position: "sticky",
-          top: 0,
+          top: 45,
           zIndex: 100,
           backgroundColor: "white",
         }}

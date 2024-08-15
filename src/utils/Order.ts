@@ -3,7 +3,7 @@ import { OrderItem } from "@interfaces/db";
 import { IdentifiableMenuItem } from "@interfaces/type";
 // import React from "react";
 
-export const AddItemToCart = (
+export const addItemToCart = (
   cartContext: any,
   menuItem: IdentifiableMenuItem,
   amount: number,

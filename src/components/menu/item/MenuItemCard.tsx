@@ -11,9 +11,10 @@ interface menuItemCardProps {
 }
 
 const CustomCard = styled(Card)({
-  width: "10rem",
-  height: "10rem",
+  width: "100%",
+  height: "auto",
   position: "relative",
+  aspectRatio: 1
 });
 
 const MenuItemCard = (props: menuItemCardProps) => {

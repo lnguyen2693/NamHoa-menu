@@ -17,13 +17,12 @@ const MenuCard = (props: MenuCardProps) => {
       <Grid
         container
         spacing={2}
-        // justifyContent="center"
         alignItems="center"
         paddingLeft={1}
         paddingRight={1}
       >
         {items.map((item) => (
-          <Grid item key={item.id}>
+          <Grid item key={item.id} xs={6} sm={4} md={2}>
             <MenuItemCard key={item.id} menuItem={item} />
           </Grid>
         ))}

@@ -4,6 +4,7 @@ import { ThemeProvider } from "@mui/material";
 import { theme } from "../../theme";
 import CssBaseline from "@mui/material";
 import "../styles/global.css";
+import { Suspense } from "react";
 // import '@fontsource/poppins';
 
 export const metadata: Metadata = {
@@ -20,7 +21,9 @@ export default function RootLayout({
     <html lang="en">
       <body style={{ height: "100vh" }}>
         <AppRouterCacheProvider>
-          <ThemeProvider theme={theme}>{children}</ThemeProvider>
+          <Suspense>
+            <ThemeProvider theme={theme}>{children}</ThemeProvider>
+          </Suspense>
         </AppRouterCacheProvider>
       </body>
     </html>
