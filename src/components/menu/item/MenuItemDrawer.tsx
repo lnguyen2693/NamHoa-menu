@@ -1,15 +1,17 @@
 import React from "react";
-import { Hidden, SwipeableDrawer } from "@mui/material";
+import { Button, SwipeableDrawer } from "@mui/material";
 import { Global } from "@emotion/react";
-import { blue, pink } from "@mui/material/colors";
 import { IoMdClose } from "react-icons/io";
 import { IdentifiableMenuItem } from "@interfaces/type";
-import { TbCurrencyDong } from "react-icons/tb";
-import { height, width } from "@mui/system";
+import { Box, width } from "@mui/system";
 import { SingleChoice } from "./itemOptions/SingleChoice";
 import { IoMdAdd } from "react-icons/io";
-import { IoAddSharp } from "react-icons/io5";
+import { IoMdRemove } from "react-icons/io";
 import { MultipleChoice } from "./itemOptions/MultipleChoice";
+import { LuDot } from "react-icons/lu";
+import { addItemToCart } from "utils/Order";
+import { CartContext } from "@context/CartProvider";
+import { useSearchParams } from "next/navigation";
 
 // /app/page.tsx -> /
 // /app/menu/page.tsx -> /menu
@@ -21,11 +23,45 @@ interface menuItemDrawerProps {
 }
 
 export const MenuItemDrawer = (props: menuItemDrawerProps) => {
+  const searchParams = useSearchParams();
+  const table = searchParams.get("table");
+
+  const { menuItem } = props;
   const [open, setOpen] = React.useState(false);
-  const [selectedOptions, setSelectedOptions] = React.useState({});
+  const [amount, setAmount] = React.useState(0);
+  const [addButton, setAddButton] = React.useState(true);
+
+  const [options, setOptions] = React.useState<Record<string, string[]>>({});
+
+  const cartContext = React.useContext(CartContext);
+
+  const addAmount = () => {
+    setAmount(amount + 1);
+  };
+
+  const lessAmount = () => {
+    if (amount > 0) {
+      setAmount(amount - 1);
+    }
+  };
+
+  const addOptions = (key: string, choices: string[]) => {
+    setOptions({ ...options, [key]: choices });
+  };
+
+  const requirement = Object.keys(menuItem.options).filter(
+    (key) => menuItem.options[key].required
+  );
+
+  React.useEffect(() => {
+    const unsatisfied = requirement.filter(
+      (key) => options[key] == undefined || options[key].length === 0
+    );
+    setAddButton(unsatisfied.length !== 0 || amount === 0 || table === null);
+  }, [amount, options]);
 
   return (
-    <div style={{ position: "absolute", zIndex: "1", bottom: 8, right: 7 }}>
+    <Box style={{ position: "absolute", zIndex: "1", bottom: 8, right: 7 }}>
       <button
         style={{
           width: "2.5rem",
@@ -70,8 +106,8 @@ export const MenuItemDrawer = (props: menuItemDrawerProps) => {
         ></div>
         <div
           style={{
-            width: "full",
-            height: "full",
+            width: "100%",
+            height: "100%",
             // backgroundColor: pink[50],
             padding: 13,
           }}
@@ -92,12 +128,16 @@ export const MenuItemDrawer = (props: menuItemDrawerProps) => {
                   key={key}
                   keyItem={key}
                   option={props.menuItem.options[key]}
+                  allOptions={options}
+                  addOptions={addOptions}
                 ></MultipleChoice>
               ) : (
                 <SingleChoice
                   key={key}
                   keyItem={key}
                   option={props.menuItem.options[key]}
+                  allOptions={options}
+                  addOptions={addOptions}
                 />
               )
             )}
@@ -122,8 +162,85 @@ export const MenuItemDrawer = (props: menuItemDrawerProps) => {
         >
           <IoMdClose size={25} />
         </button>
+
+        <Box
+          bottom={0}
+          display="flex"
+          flexDirection="column"
+          alignItems="center"
+          justifyContent="center"
+          boxShadow={1}
+          padding={2}
+          gap={2}
+          fontSize={16}
+        >
+          <Box style={{ display: "flex", gap: 5 }}>
+            <button
+              style={{
+                width: "2.5rem",
+                height: "2.5rem",
+                borderRadius: 100,
+                border: "none",
+                boxShadow: "0.1rem 0.1rem 2px lightGrey",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+              onClick={lessAmount}
+            >
+              <IoMdRemove size={20} />
+            </button>
+            <Box
+              fontSize={20}
+              style={{
+                width: "2rem",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              {amount}
+            </Box>
+            <button
+              style={{
+                width: "2.5rem",
+                height: "2.5rem",
+                borderRadius: 100,
+                border: "none",
+                boxShadow: "0.1rem 0.1rem 2px lightGrey",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+              onClick={addAmount}
+            >
+              <IoMdAdd size={20} />
+            </button>
+          </Box>
+
+          <Button
+            fullWidth
+            variant="contained"
+            color="secondary"
+            disabled={addButton}
+            style={{
+              textTransform: "initial",
+              borderRadius: 100,
+              fontSize: 18,
+            }}
+            onClick={() =>
+              addItemToCart(cartContext, menuItem, amount, options)
+            }
+          >
+            Them {amount} vao gio hang <LuDot />
+            {(props.menuItem.price * amount).toLocaleString("en-US", {
+              style: "currency",
+              currency: "VND",
+            })}
+          </Button>
+        </Box>
       </SwipeableDrawer>
       {/* </div> */}
-    </div>
+    </Box>
   );
 };

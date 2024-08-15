@@ -1,7 +1,7 @@
 import { OrdersContext } from "@context/OrdersProvider";
 import { RestaurantContext } from "@context/RestaurantProvider";
 import { IdentifiableMenuItems } from "@interfaces/type";
-import { Tabs, Tab } from "@mui/material";
+import { Tabs, Tab, Divider } from "@mui/material";
 import { Box } from "@mui/system";
 import React from "react";
 import MenuCard from "./MenuCard";
@@ -21,13 +21,11 @@ export const MenuBoard = () => {
   const tabs: TabInformation = React.useMemo(
     () =>
       menuItems.reduce((acc, current) => {
-        // const ref = React.createRef(); // ua cai nay lm gi
         const tab = acc[current.category] ?? {
           ref: React.createRef(),
           items: [],
         };
-        // console.log("acc: ", acc)
-        // console.log("current: ", current)
+
         tab.items.push(current);
         acc[current.category] = tab;
         return acc;
@@ -46,13 +44,13 @@ export const MenuBoard = () => {
   };
 
   return (
-    <Box position="relative">
+    <Box position="relative" top={0}>
       <Tabs
         value={selectedTab}
         onChange={onTabSelected}
         style={{
           position: "sticky",
-          top: 0,
+          top: 45,
           zIndex: 100,
           backgroundColor: "white",
         }}
@@ -83,10 +81,18 @@ export const MenuBoard = () => {
           })
           .map(([category, metadata]) => {
             return (
-              <div key={category} ref={metadata.ref}>
-                {category}
+              <Box key={category} ref={metadata.ref} marginBottom={10}>
+                <Box fontSize={20} textTransform={"uppercase"}>{category}</Box>
+                <Divider
+                  style={{
+                    marginBottom: 17,
+                    marginTop: 5,
+                    opacity: 1,
+                    color: "black",
+                  }}
+                />
                 <MenuCard items={tabs[category].items}></MenuCard>
-              </div>
+              </Box>
             );
           })}
       </Box>
