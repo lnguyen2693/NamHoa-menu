@@ -19,5 +19,4 @@ export const addItemToCart = (
   } as OrderItem;
 
   cartContext.addItem(newOrderItem);
-  console.log('cart: ', cartContext.cart);
 };

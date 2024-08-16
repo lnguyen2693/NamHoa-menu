@@ -12,7 +12,6 @@ interface PublicLayoutProps {
   children: React.ReactNode;
   params: {
     restaurantId: string;
-    table: number;
   };
 }
 
@@ -25,35 +24,9 @@ const PublicLayout = (props: PublicLayoutProps) => {
     <OrdersProvider restaurantId="YhG2Rp1FVTHKIVfkDDO5">
       <RestaurantProvider restaurantId="YhG2Rp1FVTHKIVfkDDO5">
         {table ? (
-          <CartProvider cart={defaultOrder(table)}>
-            <Box
-              sx={{
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "space-between",
-                // overflow: "hidden",
-                padding: "10px 10px",
-                rowGap: "10rem",
-              }}
-            >
-              {children}
-              <Footer />
-            </Box>
-          </CartProvider>
+          <CartProvider cart={defaultOrder(table)}>{children}</CartProvider>
         ) : (
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "space-between",
-              // overflow: "hidden",
-              padding: "10px 10px",
-              rowGap: "10rem",
-            }}
-          >
-            {children}
-            <Footer />
-          </Box>
+          <Box>{children}</Box>
         )}
       </RestaurantProvider>
     </OrdersProvider>

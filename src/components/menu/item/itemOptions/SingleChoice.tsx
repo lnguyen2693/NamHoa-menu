@@ -34,9 +34,9 @@ export const SingleChoice = (props: SingleChoiceProps) => {
 
   const handleChoice = (
     event: React.MouseEvent<HTMLElement>,
-    newChoice: string[]
+    newChoice: string
   ) => {
-    addOptions(keyItem, newChoice);
+    addOptions(keyItem, [newChoice]);
   };
 
   return (
