@@ -1,5 +1,9 @@
+import { CartContext } from "@context/CartProvider";
 import { OrderItem } from "@interfaces/db";
+import { Button } from "@mui/material";
 import { Box } from "@mui/system";
+import React from "react";
+import { IoMdAdd, IoMdRemove } from "react-icons/io";
 
 interface ItemInCartProps {
   item: OrderItem;
@@ -7,15 +11,32 @@ interface ItemInCartProps {
 
 const ItemInCart = (props: ItemInCartProps) => {
   const { item } = props;
+  const cartContext = React.useContext(CartContext);
+
+  const [amount, setAmount] = React.useState(item.amount);
+
+  const handleAddOneItem = () => {
+    cartContext.addOne(item);
+    setAmount(amount + 1);
+    console.log("item in ItemInCart: ", item);
+  };
+
+  const handleRemoveOneItem = () => {
+    cartContext.removeItem(item);
+    setAmount(amount - 1);
+    console.log("item in ItemInCart: ", item);
+  };
+
   return (
     <Box
       display="flex"
       flexDirection="column"
-      gap={2}
+      gap={1}
       padding={2}
       margin={0.5}
       borderRadius={1}
       boxShadow={1}
+      sx={{ backgroundColor: "white" }}
     >
       <Box display="flex" justifyContent="space-between">
         <Box>
@@ -39,8 +60,59 @@ const ItemInCart = (props: ItemInCartProps) => {
         </Box>
       </Box>
       <Box display="flex" justifyContent="space-between">
-        <Box>del/edit</Box>
-        <Box>+ / amount / -</Box>
+        <Button
+          color="secondary"
+          size="small"
+          sx={{ textTransform: "initial" }}
+        >
+          Chỉnh sửa
+        </Button>
+        <Box display="flex" alignItems="center" gap={0.5}>
+          {/* + / {item.amount} / - */}
+          {/* <Box> + </Box> */}
+          <button
+            style={{
+              width: "2rem",
+              height: "2rem",
+              borderRadius: 100,
+              border: "none",
+              boxShadow: "0.1rem 0.1rem 2px lightGrey",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+            onClick={handleRemoveOneItem}
+          >
+            <IoMdRemove size={15} />
+          </button>
+          <Box
+            fontSize={18}
+            style={{
+              width: "2rem",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            {amount}
+          </Box>
+          <button
+            style={{
+              width: "2rem",
+              height: "2rem",
+              borderRadius: 100,
+              border: "none",
+              boxShadow: "0.1rem 0.1rem 2px lightGrey",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+            onClick={handleAddOneItem}
+          >
+            <IoMdAdd size={15} />
+          </button>
+          {/* <Box> - </Box> */}
+        </Box>
       </Box>
     </Box>
   );

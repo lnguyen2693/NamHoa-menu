@@ -80,9 +80,7 @@ export default function Menu() {
           </Box>
         </Box>
         <MenuBoard></MenuBoard>
-        {/* <Box position="fixed" width={1} bottom={0} left={0}>
-        <BottomNavigation></BottomNavigation>
-      </Box> */}
+        
         <CartDrawer openCart={openCart} setOpenCart={setOpenCart}></CartDrawer>
         <Paper
           sx={{ position: "fixed", bottom: 0, left: 0, right: 0, zIndex: 100 }}
