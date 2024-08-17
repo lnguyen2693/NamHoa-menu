@@ -35,8 +35,7 @@ export default function Menu() {
         display: "flex",
         flexDirection: "column",
         justifyContent: "space-between",
-        // overflow: "hidden",
-        padding: "10px 10px",
+        paddingVertical: "10px",
         rowGap: "10rem",
       }}
     >
@@ -68,14 +67,15 @@ export default function Menu() {
             image="/nam-hoa-header-img.png"
             title="Nam Hoa header image"
           />
-          <Box paddingTop={1.5} paddingBottom={1.5}>
+          <Box paddingY={"8px"} paddingX={"16px"}>
             <Button
               variant="outlined"
               fullWidth
               color="secondary"
               style={{ textTransform: "initial" }}
             >
-              <FaBell /> Gọi nhân viên
+              <FaBell />{" "}
+              <span style={{ marginLeft: "4px" }}>Gọi nhân viên</span>
             </Button>
           </Box>
         </Box>
