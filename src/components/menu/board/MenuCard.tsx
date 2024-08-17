@@ -14,13 +14,7 @@ const MenuCard = (props: MenuCardProps) => {
 
   return (
     <div style={{ width: "full" }}>
-      <Grid
-        container
-        spacing={2}
-        alignItems="center"
-        paddingLeft={1}
-        paddingRight={1}
-      >
+      <Grid container spacing={2} alignItems="center">
         {items.map((item) => (
           <Grid item key={item.id} xs={6} sm={4} md={2}>
             <MenuItemCard key={item.id} menuItem={item} />

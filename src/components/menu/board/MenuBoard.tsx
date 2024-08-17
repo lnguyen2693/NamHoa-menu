@@ -48,12 +48,17 @@ export const MenuBoard = () => {
       <Tabs
         value={selectedTab}
         onChange={onTabSelected}
-        style={{
+        sx={{
           position: "sticky",
           top: 45,
           zIndex: 100,
           backgroundColor: "white",
+          padding: "16px 16px 4px",
+          ".MuiTabs-flexContainer": {
+            gap: "8px",
+          },
         }}
+        TabIndicatorProps={{ style: { display: "none" } }}
       >
         {Object.keys(tabs)
           .sort((a, b) => {
@@ -64,15 +69,31 @@ export const MenuBoard = () => {
               value={category}
               label={category}
               key={category}
-              sx={{ textTransform: "none" }}
+              sx={{
+                textTransform: "none",
+                "&.MuiTab-root": {
+                  bgcolor: "#E5E5E5",
+                  color: "#000",
+                  padding: "4px 10px",
+                  borderRadius: "8px",
+                  minHeight: "36px",
+                },
+                "&.Mui-selected": {
+                  bgcolor: "#BD1E2D",
+                  color: "#FFF",
+                },
+              }}
             />
           ))}
       </Tabs>
+      <Divider sx={{ height: "6px", bgcolor: "#E5E5E5", border: "none" }} />
       <Box
         sx={{
           display: "flex",
           flexDirection: "column",
-          rowGap: "1rem",
+          rowGap: "4rem",
+          marginTop: "32px",
+          marginX: "16px",
         }}
       >
         {Object.entries(tabs)
@@ -81,17 +102,20 @@ export const MenuBoard = () => {
           })
           .map(([category, metadata]) => {
             return (
-              <Box key={category} ref={metadata.ref} marginBottom={10}>
-                <Box fontSize={20} textTransform={"uppercase"}>{category}</Box>
+              <Box key={category} ref={metadata.ref}>
+                <Box fontSize={20} textTransform={"uppercase"} fontWeight={800}>
+                  {category}
+                </Box>
                 <Divider
-                  style={{
-                    marginBottom: 17,
-                    marginTop: 5,
-                    opacity: 1,
-                    color: "black",
+                  sx={{
+                    "&.MuiDivider-root": {
+                      marginTop: "5px",
+                      marginBottom: "16px",
+                      borderColor: "#000",
+                    },
                   }}
                 />
-                <MenuCard items={tabs[category].items}></MenuCard>
+                <MenuCard items={tabs[category].items} />
               </Box>
             );
           })}
