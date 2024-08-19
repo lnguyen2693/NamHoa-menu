@@ -4,8 +4,8 @@ import { Box } from "@mui/system";
 import React from "react";
 import { IoIosArrowBack } from "react-icons/io";
 import ItemInCart from "./ItemInCart";
-import { IdentifiableOrder } from "@interfaces/type";
-import { OrderItem } from "@interfaces/db";
+import { makeOrder } from "utils/Order";
+import { RestaurantContext } from "@context/RestaurantProvider";
 
 interface CartDrawerProps {
   openCart: boolean;
@@ -15,6 +15,33 @@ interface CartDrawerProps {
 const CartDrawer = (props: CartDrawerProps) => {
   const { openCart, setOpenCart } = props;
   const cartContext = React.useContext(CartContext);
+  const restaurantContext = React.useContext(RestaurantContext);
+
+  const totalAmount = () => {
+    return cartContext.cart.orderItems.reduce((amount, item) => {
+      return amount + item.amount;
+    }, 0);
+  };
+
+  const totalPrice = () => {
+    return new Intl.NumberFormat("vi-VN", {
+      style: "currency",
+      currency: "VND",
+      currencyDisplay: "code",
+    })
+      .format(
+        cartContext.cart.orderItems.reduce((price, item) => {
+          return price + item.price * item.amount;
+        }, 0)
+      )
+      .replace("VND", "");
+  };
+
+  const handleOrder = () => {
+    makeOrder(cartContext, restaurantContext);
+    cartContext.resetCart();
+    setOpenCart(false);
+  };
 
   return (
     <Box>
@@ -88,18 +115,31 @@ const CartDrawer = (props: CartDrawerProps) => {
             paddingLeft={2}
             paddingRight={2}
           >
-            <Box>Tổng: __ món</Box>
-            <Box>total price</Box>
+            <Box>Tổng: {totalAmount()} món</Box>
+            <Box>{totalPrice()}đ</Box>
           </Box>
           <Box height={40}>
-            <Button
-              color="secondary"
-              variant="contained"
-              fullWidth
-              sx={{ borderRadius: 10 }}
-            >
-              Gọi món
-            </Button>
+            {totalAmount() == 0 ? (
+              <Button
+                color="secondary"
+                variant="contained"
+                fullWidth
+                sx={{ borderRadius: 10, textTransform: "initial" }}
+                disabled
+              >
+                Gọi món
+              </Button>
+            ) : (
+              <Button
+                color="secondary"
+                variant="contained"
+                fullWidth
+                sx={{ borderRadius: 10, textTransform: "initial" }}
+                onClick={() => handleOrder()}
+              >
+                Gọi món
+              </Button>
+            )}
           </Box>
         </Box>
       </SwipeableDrawer>
