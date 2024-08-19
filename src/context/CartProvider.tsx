@@ -6,7 +6,6 @@ import React from "react";
 
 interface CartProviderProps {
   children?: React.ReactNode;
-  // table: number;
   cart: IdentifiableOrder;
 }
 
@@ -16,6 +15,7 @@ interface CartContext {
   removeItem: (item: OrderItem) => void;
   addOne: (item: OrderItem) => void;
   editItem: (oldItem: OrderItem, newItem: OrderItem) => void;
+  resetCart: () => void;
 }
 
 export const CartContext = React.createContext({} as CartContext);
@@ -43,14 +43,15 @@ const CartProvider = (props: CartProviderProps) => {
     // filter cart.options to see if there is any item in cart
     // has item --> increase amount
     // does not have item --> push new item
+    const orderItems = currentCart.orderItems;
     if (
-      currentCart.orderItems.filter(
+      orderItems.filter(
         (i) =>
           i.itemID === item.itemID &&
           JSON.stringify(i.options) === JSON.stringify(item.options)
       ).length > 0
     ) {
-      currentCart.orderItems.forEach((i) => {
+      orderItems.forEach((i) => {
         if (
           i.itemID === item.itemID &&
           JSON.stringify(i.options) === JSON.stringify(item.options)
@@ -59,9 +60,9 @@ const CartProvider = (props: CartProviderProps) => {
         }
       });
     } else {
-      currentCart.orderItems.push(item);
+      orderItems.push(item);
     }
-    setCurrentCart(currentCart);
+    setCurrentCart({ ...currentCart, orderItems: orderItems });
   };
 
   const editItem = (oldItem: OrderItem, newItem: OrderItem) => {
@@ -79,17 +80,17 @@ const CartProvider = (props: CartProviderProps) => {
     newItem.options = newOptions;
 
     // filter out oldItem
-    currentCart.orderItems = currentCart.orderItems.filter(
+    const orderItems = currentCart.orderItems.filter(
       (i) =>
         i.itemID !== oldItem.itemID ||
         JSON.stringify(i.options) !== JSON.stringify(oldItem.options)
     );
 
     // add newItem
-    currentCart.orderItems.push(newItem);
+    orderItems.push(newItem);
 
     // set cart
-    setCurrentCart(currentCart);
+    setCurrentCart({ ...currentCart, orderItems: orderItems });
   };
 
   const addOne = (item: OrderItem) => {
@@ -108,14 +109,15 @@ const CartProvider = (props: CartProviderProps) => {
 
     // filter cart.options to see if there is any item in cart
     // has item --> increase amount by 1
+    const orderItems = currentCart.orderItems;
     if (
-      currentCart.orderItems.filter(
+      orderItems.filter(
         (i) =>
           i.itemID === item.itemID &&
           JSON.stringify(i.options) === JSON.stringify(item.options)
       ).length > 0
     ) {
-      currentCart.orderItems.forEach((i) => {
+      orderItems.forEach((i) => {
         if (
           i.itemID === item.itemID &&
           JSON.stringify(i.options) === JSON.stringify(item.options)
@@ -124,11 +126,10 @@ const CartProvider = (props: CartProviderProps) => {
         }
       });
     }
-    console.log("add 1 item: ", currentCart);
-    setCurrentCart(currentCart);
+
+    setCurrentCart({ ...currentCart, orderItems: orderItems });
   };
 
-  // chua test, xem lai
   const removeItem = (item: OrderItem) => {
     setCurrentCart((currentCart) => {
       const orderItems = currentCart.orderItems.filter(
@@ -136,19 +137,18 @@ const CartProvider = (props: CartProviderProps) => {
           i.itemID !== item.itemID ||
           JSON.stringify(i.options) !== JSON.stringify(item.options)
       );
-      console.log("remove item, filter: ", currentCart.orderItems);
 
       if (item.amount - 1 > 0) {
-        console.log("amount - 1:", item.amount - 1);
         orderItems.push({ ...item, amount: item.amount - 1 });
       }
 
-      console.log("remove item: ", currentCart.orderItems);
       return { ...currentCart, orderItems: orderItems };
     });
   };
 
-  console.log("With new state", currentCart);
+  const resetCart = () => {
+    setCurrentCart({ ...currentCart, orderItems: [] });
+  };
 
   return (
     <Provider
@@ -158,17 +158,12 @@ const CartProvider = (props: CartProviderProps) => {
         removeItem: removeItem,
         addOne: addOne,
         editItem: editItem,
+        resetCart: resetCart,
       }}
     >
       {props.children}
     </Provider>
   );
-  // }
-  // Responsibilities:
-  //  1. What's currently in the cart?
-  //  2. What happens when user / employee add or remove items from cart
-  //  3. What happens when user / employee click submit
-  // return <Provider value={{ cart: {} }}>{props.children}</Provider>;
 };
 
 export default CartProvider;

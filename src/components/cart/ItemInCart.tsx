@@ -13,18 +13,12 @@ const ItemInCart = (props: ItemInCartProps) => {
   const { item } = props;
   const cartContext = React.useContext(CartContext);
 
-  const [amount, setAmount] = React.useState(item.amount);
-
   const handleAddOneItem = () => {
     cartContext.addOne(item);
-    setAmount(amount + 1);
-    console.log("item in ItemInCart: ", item);
   };
 
   const handleRemoveOneItem = () => {
     cartContext.removeItem(item);
-    setAmount(amount - 1);
-    console.log("item in ItemInCart: ", item);
   };
 
   return (
@@ -94,7 +88,7 @@ const ItemInCart = (props: ItemInCartProps) => {
               justifyContent: "center",
             }}
           >
-            {amount}
+            {item.amount}
           </Box>
           <button
             style={{
