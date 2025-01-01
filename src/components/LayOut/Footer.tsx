@@ -9,65 +9,61 @@ const Footer = () => {
   const context = React.useContext(RestaurantContext);
 
   return (
-    <>
-      <Card style={{ padding: "10px" }}>
-        <CardMedia
-          component="img"
-          image="/nam-hoa-footer-img.png"
-          title="Nam Hoa footer image"
-        />
+    <Card style={{ padding: "10px" }}>
+      <CardMedia
+        component="img"
+        image="/nam-hoa-footer-img.png"
+        title="Nam Hoa footer image"
+      />
+      <div
+        style={{
+          color: theme.palette.primary.main,
+          marginTop: "1.5rem",
+          marginBottom: "1.5rem",
+          textAlign: "center",
+          fontSize: "1rem",
+        }}
+      >
+        Chúc bạn có một bữa ăn ngon miệng!
+      </div>
+
+      <div style={{ marginInline: "1rem" }}>
         <div
           style={{
-            color: theme.palette.primary.main,
-            marginTop: "1.5rem",
-            marginBottom: "1.5rem",
-            textAlign: "center",
-            fontSize: "1rem",
+            display: "flex",
+            marginTop: "0.5rem",
+            marginBottom: "0.5rem",
           }}
         >
-          Chúc bạn có một bữa ăn ngon miệng!
+          <HiMapPin
+            style={{
+              color: theme.palette.primary.dark,
+              marginRight: "1rem",
+            }}
+          />
+          <div style={{ fontSize: "0.8rem" }}>{context.restaurant.address}</div>
         </div>
 
-        <div style={{ marginInline: "1rem" }}>
-          <div
+        <div
+          style={{
+            display: "flex",
+            marginTop: "0.5rem",
+            marginBottom: "0.5rem",
+          }}
+        >
+          <MdPhoneIphone
             style={{
-              display: "flex",
-              marginTop: "0.5rem",
-              marginBottom: "0.5rem",
+              color: theme.palette.primary.dark,
+              marginRight: "1rem",
             }}
-          >
-            <HiMapPin
-              style={{
-                color: theme.palette.primary.dark,
-                marginRight: "1rem",
-              }}
-            />
-            <div style={{ fontSize: "0.8rem" }}>
-              {context.restaurant.address}
-            </div>
-          </div>
+          />
 
-          <div
-            style={{
-              display: "flex",
-              marginTop: "0.5rem",
-              marginBottom: "0.5rem",
-            }}
-          >
-            <MdPhoneIphone
-              style={{
-                color: theme.palette.primary.dark,
-                marginRight: "1rem",
-              }}
-            />
-
-            <div style={{ fontSize: "0.8rem" }}>
-              {context.restaurant.contact.number}
-              </div>
+          <div style={{ fontSize: "0.8rem" }}>
+            {context.restaurant.contact.number}
           </div>
         </div>
-      </Card>
-    </>
+      </div>
+    </Card>
   );
 };
 
