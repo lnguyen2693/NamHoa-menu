@@ -46,6 +46,8 @@ export const MenuItemDrawer = (props: menuItemDrawerProps) => {
 
   const handleAddItem = () => {
     addItemToCart(cartContext, menuItem, amount, options);
+    setAmount(0);
+    setOptions({});
     setOpen(false);
   };
 
@@ -101,7 +103,7 @@ export const MenuItemDrawer = (props: menuItemDrawerProps) => {
               height: "100%",
               // backgroundColor: pink[50],
               margin: 13,
-              paddingBottom: 150
+              paddingBottom: 150,
             }}
           >
             <Box style={{ fontSize: "2rem" }}>{props.menuItem.name}</Box>
@@ -114,25 +116,27 @@ export const MenuItemDrawer = (props: menuItemDrawerProps) => {
             </Box>
 
             <Box style={{ display: "flexbox" }}>
-              {Object.keys(props.menuItem.options).map((key) =>
-                props.menuItem.options[key].multipleChoice ? (
-                  <MultipleChoice
-                    key={key}
-                    keyItem={key}
-                    option={props.menuItem.options[key]}
-                    allOptions={options}
-                    addOptions={addOptions}
-                  ></MultipleChoice>
-                ) : (
-                  <SingleChoice
-                    key={key}
-                    keyItem={key}
-                    option={props.menuItem.options[key]}
-                    allOptions={options}
-                    addOptions={addOptions}
-                  />
-                )
-              )}
+              {Object.keys(props.menuItem.options)
+                .sort((a, b) => a.localeCompare(b))
+                .map((key) =>
+                  props.menuItem.options[key].multipleChoice ? (
+                    <MultipleChoice
+                      key={key}
+                      keyItem={key}
+                      option={props.menuItem.options[key]}
+                      allOptions={options}
+                      addOptions={addOptions}
+                    ></MultipleChoice>
+                  ) : (
+                    <SingleChoice
+                      key={key}
+                      keyItem={key}
+                      option={props.menuItem.options[key]}
+                      allOptions={options}
+                      addOptions={addOptions}
+                    />
+                  )
+                )}
             </Box>
           </Box>
           <button
@@ -150,7 +154,11 @@ export const MenuItemDrawer = (props: menuItemDrawerProps) => {
               alignItems: "center",
               justifyContent: "center",
             }}
-            onClick={() => setOpen(false)}
+            onClick={() => {
+              setAmount(0);
+              setOptions({});
+              setOpen(false);
+            }}
           >
             <IoMdClose size={25} />
           </button>
