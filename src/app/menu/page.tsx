@@ -34,12 +34,12 @@ export default function Menu() {
       sx={{
         display: "flex",
         flexDirection: "column",
-        paddingVertical: "10px",
         justifyContent: "space-between",
+        paddingVertical: "10px",
         rowGap: "10rem",
       }}
     >
-      <Box display="flex" flexDirection="column">
+      <Box>
         <Box
           position="fixed"
           top={0}
