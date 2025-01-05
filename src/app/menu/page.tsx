@@ -79,8 +79,10 @@ export default function Menu() {
             </Button>
           </Box>
         </Box>
-        <MenuBoard></MenuBoard>
-        
+        <MenuBoard />
+      </Box>
+      <Box display="flex" flexDirection="column" rowGap={10}>
+        <Footer />
         <CartDrawer openCart={openCart} setOpenCart={setOpenCart}></CartDrawer>
         <Paper
           sx={{ position: "fixed", bottom: 0, left: 0, right: 0, zIndex: 100 }}
@@ -105,7 +107,6 @@ export default function Menu() {
           </BottomNavigation>
         </Paper>
       </Box>
-      <Footer />
     </Box>
   );
 }
