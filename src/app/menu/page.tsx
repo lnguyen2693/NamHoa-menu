@@ -54,7 +54,7 @@ export default function Menu() {
           alignSelf="center"
         >
           <Box marginLeft={2} fontSize={20}>
-            {table ? <Box>Bàn {table}</Box> : <Box></Box>}
+            {table ? <Box>Bàn {table}</Box> : <Box>Menu</Box>}
           </Box>
           {/* <Button style={{ marginRight: 2 }} color="secondary">
           <IoMdSearch size={23} />
@@ -83,29 +83,44 @@ export default function Menu() {
       </Box>
       <Box display="flex" flexDirection="column" rowGap={10}>
         <Footer />
-        <CartDrawer openCart={openCart} setOpenCart={setOpenCart}></CartDrawer>
-        <Paper
-          sx={{ position: "fixed", bottom: 0, left: 0, right: 0, zIndex: 100 }}
-          elevation={3}
-        >
-          <BottomNavigation
-            showLabels
-            value={openCart ? 1 : 0}
-            onChange={(event, newValue) => {
-              setOpenCart(newValue === 1);
-              console.log("open cart: ", newValue === 1);
-            }}
-          >
-            <BottomNavigationAction
-              label="Menu"
-              icon={<MdOutlineMenuBook size={23} />}
-            />
-            <BottomNavigationAction
-              label="Giỏ hàng"
-              icon={<FaShoppingCart size={23} />}
-            />
-          </BottomNavigation>
-        </Paper>
+        {table ? (
+          <>
+            <CartDrawer
+              openCart={openCart}
+              setOpenCart={setOpenCart}
+            ></CartDrawer>
+            <Paper
+              sx={{
+                position: "fixed",
+                bottom: 0,
+                left: 0,
+                right: 0,
+                zIndex: 100,
+              }}
+              elevation={3}
+            >
+              <BottomNavigation
+                showLabels
+                value={openCart ? 1 : 0}
+                onChange={(event, newValue) => {
+                  setOpenCart(newValue === 1);
+                  console.log("open cart: ", newValue === 1);
+                }}
+              >
+                <BottomNavigationAction
+                  label="Menu"
+                  icon={<MdOutlineMenuBook size={23} />}
+                />
+                <BottomNavigationAction
+                  label="Giỏ hàng"
+                  icon={<FaShoppingCart size={23} />}
+                />
+              </BottomNavigation>
+            </Paper>
+          </>
+        ) : (
+          <></>
+        )}
       </Box>
     </Box>
   );

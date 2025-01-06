@@ -1,5 +1,23 @@
-import Image from "next/image";
+"use client";
+
+import { useRouter } from "next/navigation";
+
+// TODO(lnguye2693) - Write landing page
 
 export default function Home() {
-  return <p>Landing Page</p>;
+  const router = useRouter();
+
+  return (
+    <>
+      <button type="button" onClick={() => router.push("/admin")}>
+        Nhân viên
+      </button>
+      <button type="button" onClick={() => router.push("/menu")}>
+        Menu (không order)
+      </button>
+      <button type="button" onClick={() => router.push("/menu?table=2")}>
+        Khách hàng (order)
+      </button>
+    </>
+  );
 }
