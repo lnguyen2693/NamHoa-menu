@@ -13,7 +13,7 @@ interface Props {
 
 const Page = (props: Props) => {
   const ordersListContext = React.useContext(OrdersContext);
-  console.log(ordersListContext);
+  // console.log(ordersListContext);
   const cartContext = React.useContext(CartContext);
 
   const [order, setOrder] = React.useState<IdentifiableOrder | undefined>(

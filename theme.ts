@@ -5,13 +5,14 @@ export const theme = createTheme({
   palette: {
     primary: {
       main: "#BD1E2D",
+      light: "#fae2e4"
     },
     secondary: {
       main: "#5963A5",
     },
   },
   typography: {
-    fontFamily: "Poppins",
+    fontFamily: "Roboto",
   },
   components: {
     MuiCssBaseline: {
