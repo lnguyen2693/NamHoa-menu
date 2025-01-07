@@ -5,9 +5,10 @@ import { Button, CardMedia, Paper } from "@mui/material";
 import { Box } from "@mui/system";
 import EditIcon from "@mui/icons-material/Edit";
 import React from "react";
-import { EditMenuBoard } from "@components/menu/board/EditMenuBoard";
+import { EditMenuBoard } from "@components/admin/editMenu/EditMenuBoard";
 import { Footer } from "@components/LayOut";
 import AddIcon from "@mui/icons-material/Add";
+import { AdminNav } from "@components/admin/AdminNav";
 
 export default function AdminMenu() {
   const [editing, setEditing] = React.useState(false);
@@ -61,7 +62,7 @@ export default function AdminMenu() {
                     flexDirection: "column",
                     textTransform: "initial",
                     padding: 3,
-                    rowGap: 0.5
+                    rowGap: 0.5,
                   }}
                   style={{ borderStyle: "dashed" }}
                   fullWidth
@@ -109,7 +110,6 @@ export default function AdminMenu() {
               columnGap: 2,
               paddingLeft: 2,
               paddingRight: 2,
-              
             }}
           >
             <Button
@@ -120,11 +120,10 @@ export default function AdminMenu() {
                 borderRadius: 30,
                 flexGrow: 1,
                 padding: 1,
-                fontSize: 16
+                fontSize: 16,
               }}
               // TODO(lnguye2693) - onClick change menu on Firebase
               onClick={() => setEditing(false)}
-              
             >
               Lưu
             </Button>
@@ -138,7 +137,7 @@ export default function AdminMenu() {
                 borderRadius: 30,
                 flexGrow: 1,
                 padding: 1,
-                fontSize: 16
+                fontSize: 16,
               }}
               onClick={() => setEditing(false)}
             >
@@ -146,7 +145,7 @@ export default function AdminMenu() {
             </Button>
           </Box>
         ) : (
-          <></>
+          <AdminNav />
         )}
       </Paper>
     </>
