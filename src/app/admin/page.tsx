@@ -7,6 +7,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import React from "react";
 import { EditMenuBoard } from "@components/menu/board/EditMenuBoard";
 import { Footer } from "@components/LayOut";
+import AddIcon from "@mui/icons-material/Add";
 
 export default function AdminMenu() {
   const [editing, setEditing] = React.useState(false);
@@ -52,16 +53,33 @@ export default function AdminMenu() {
               title="Nam Hoa header image"
             />
             <Box paddingTop={1.5} paddingBottom={1.5}>
-              <Button
-                variant="outlined"
-                fullWidth
-                color="secondary"
-                style={{ textTransform: "initial" }}
-                // temporarily for testing other functionality
-                onClick={() => setEditing(!editing)}
-              >
-                <EditIcon /> Chỉnh sửa thực đơn
-              </Button>
+              {editing ? (
+                <Button
+                  variant="outlined"
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    textTransform: "initial",
+                    padding: 3,
+                    rowGap: 0.5
+                  }}
+                  style={{ borderStyle: "dashed" }}
+                  fullWidth
+                >
+                  <AddIcon /> <Box fontSize={16}>Thêm món ăn</Box>
+                </Button>
+              ) : (
+                <Button
+                  variant="outlined"
+                  fullWidth
+                  color="secondary"
+                  style={{ textTransform: "initial" }}
+                  // temporarily for testing other functionality
+                  onClick={() => setEditing(true)}
+                >
+                  <EditIcon /> Chỉnh sửa thực đơn
+                </Button>
+              )}
             </Box>
           </Box>
           {editing ? <EditMenuBoard /> : <MenuBoard />}
@@ -91,6 +109,7 @@ export default function AdminMenu() {
               columnGap: 2,
               paddingLeft: 2,
               paddingRight: 2,
+              
             }}
           >
             <Button
@@ -101,7 +120,11 @@ export default function AdminMenu() {
                 borderRadius: 30,
                 flexGrow: 1,
                 padding: 1,
+                fontSize: 16
               }}
+              // TODO(lnguye2693) - onClick change menu on Firebase
+              onClick={() => setEditing(false)}
+              
             >
               Lưu
             </Button>
@@ -115,7 +138,9 @@ export default function AdminMenu() {
                 borderRadius: 30,
                 flexGrow: 1,
                 padding: 1,
+                fontSize: 16
               }}
+              onClick={() => setEditing(false)}
             >
               Huỷ
             </Button>
