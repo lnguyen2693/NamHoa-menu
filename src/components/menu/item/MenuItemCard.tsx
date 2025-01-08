@@ -1,10 +1,9 @@
 import React from "react";
 import { IdentifiableMenuItem } from "@interfaces/type";
-import Card from "@mui/material/Card";
-import { styled } from "@mui/material";
-import { pink } from "@mui/material/colors";
+import { Card, Paper, Typography } from "@mui/material";
 import { MenuItemDrawer } from "./MenuItemDrawer";
-import { Box } from "@mui/system";
+import { Box, styled } from "@mui/system";
+import Image from "next/image";
 
 interface menuItemCardProps {
   menuItem: IdentifiableMenuItem;
@@ -27,9 +26,10 @@ const MenuItemCard = (props: menuItemCardProps) => {
     .format(menuItem.price)
     .replace("VND", "");
 
+  console.log(menuItem.image);
   return (
     <Box>
-      <CustomCard>
+      <CustomCard elevation={4}>
         <Box
           style={{
             backgroundSize: "cover",
@@ -38,22 +38,28 @@ const MenuItemCard = (props: menuItemCardProps) => {
             backgroundImage: `url("${menuItem.image}")`,
             width: "100%",
             height: "100%",
-            opacity: menuItem.available ? 1 : 0.5
+            opacity: menuItem.available ? 1 : 0.5,
           }}
         >
-          <MenuItemDrawer
-            key={menuItem.id}
-            menuItem={menuItem}
-          ></MenuItemDrawer>
+          <MenuItemDrawer key={menuItem.id} menuItem={menuItem} />
         </Box>
       </CustomCard>
       <Box marginTop="8px">
-        <Box color={menuItem.available ? "#5DC389" : "#F35362"} fontSize="14px">
-          <span>{menuItem.available ? "Còn món" : "Hết món"}</span>
-        </Box>
-        <Box marginTop="4px" display="flex" flexDirection="column" rowGap="6px">
-          <span>{menuItem.name}</span>
-          <span style={{ fontWeight: 400 }}>{priceInVnd}đ</span>
+        <Typography
+          color={menuItem.available ? "#5DC389" : "#F35362"}
+          fontSize="14px"
+        >
+          {menuItem.available ? "Còn món" : "Hết món"}
+        </Typography>
+        <Box
+          marginTop="4px"
+          display="flex"
+          flexDirection="column"
+          color="#000000DE"
+          fontSize="14px"
+        >
+          <Typography fontWeight={500}>{menuItem.name}</Typography>
+          <Typography>{priceInVnd}đ</Typography>
         </Box>
       </Box>
     </Box>

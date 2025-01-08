@@ -1,7 +1,7 @@
 import { OrdersContext } from "@context/OrdersProvider";
 import { RestaurantContext } from "@context/RestaurantProvider";
 import { IdentifiableMenuItems } from "@interfaces/type";
-import { Tabs, Tab, Divider } from "@mui/material";
+import { Tabs, Tab, Divider, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import React from "react";
 import MenuCard from "./MenuCard";
@@ -103,15 +103,20 @@ export const MenuBoard = () => {
           .map(([category, metadata]) => {
             return (
               <Box key={category} ref={metadata.ref}>
-                <Box fontSize={20} textTransform={"uppercase"} fontWeight={800}>
+                <Typography
+                  variant="h5"
+                  fontSize={20}
+                  textTransform="uppercase"
+                  fontWeight={500}
+                >
                   {category}
-                </Box>
+                </Typography>
                 <Divider
                   sx={{
                     "&.MuiDivider-root": {
                       marginTop: "5px",
                       marginBottom: "16px",
-                      borderColor: "#000",
+                      borderColor: "#0000006B",
                     },
                   }}
                 />
