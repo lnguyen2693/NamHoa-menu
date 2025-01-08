@@ -1,10 +1,8 @@
-import React from "react";
 import { IdentifiableMenuItem } from "@interfaces/type";
-import Card from "@mui/material/Card";
-import { styled } from "@mui/material";
-import { pink } from "@mui/material/colors";
-import { MenuItemDrawer } from "./MenuItemDrawer";
-import { Box } from "@mui/system";
+import { Button, Card, IconButton } from "@mui/material";
+import { Box, styled } from "@mui/system";
+import CloseIcon from "@mui/icons-material/Close";
+import BorderColorOutlinedIcon from "@mui/icons-material/BorderColorOutlined";
 
 interface menuItemCardProps {
   menuItem: IdentifiableMenuItem;
@@ -17,7 +15,7 @@ const CustomCard = styled(Card)({
   aspectRatio: 1,
 });
 
-const MenuItemCard = (props: menuItemCardProps) => {
+export const EditItemCard = (props: menuItemCardProps) => {
   const { menuItem } = props;
   const priceInVnd = new Intl.NumberFormat("vi-VN", {
     style: "currency",
@@ -38,15 +36,32 @@ const MenuItemCard = (props: menuItemCardProps) => {
             backgroundImage: `url("${menuItem.image}")`,
             width: "100%",
             height: "100%",
-            opacity: menuItem.available ? 1 : 0.5
           }}
         >
-          <MenuItemDrawer
-            key={menuItem.id}
-            menuItem={menuItem}
-          ></MenuItemDrawer>
+          <Box
+            style={{
+              position: "absolute",
+              zIndex: "1",
+              top: 8,
+              right: 7,
+            }}
+          >
+            <IconButton
+              aria-label="delete"
+              size="small"
+              color="primary"
+              style={{
+                backgroundColor: "#fae2e4",
+                boxShadow: "0.1rem 0.1rem 1rem",
+              }}
+              // TODO - OnClick delete item
+            >
+              <CloseIcon fontSize="small" />
+            </IconButton>
+          </Box>
         </Box>
       </CustomCard>
+
       <Box marginTop="8px">
         <Box color={menuItem.available ? "#5DC389" : "#F35362"} fontSize="14px">
           <span>{menuItem.available ? "Còn món" : "Hết món"}</span>
@@ -56,8 +71,19 @@ const MenuItemCard = (props: menuItemCardProps) => {
           <span style={{ fontWeight: 400 }}>{priceInVnd}đ</span>
         </Box>
       </Box>
+
+      <Button
+        variant="outlined"
+        color="primary"
+        style={{
+          textTransform: "initial",
+          backgroundColor: "#fae2e4",
+          border: 0,
+          marginTop: 20,
+        }}
+      >
+        <BorderColorOutlinedIcon /> <Box marginLeft={1}>Sửa món</Box>
+      </Button>
     </Box>
   );
 };
-
-export default MenuItemCard;

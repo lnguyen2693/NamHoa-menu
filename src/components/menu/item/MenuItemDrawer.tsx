@@ -46,6 +46,10 @@ export const MenuItemDrawer = (props: menuItemDrawerProps) => {
 
   const handleAddItem = () => {
     addItemToCart(cartContext, menuItem, amount, options);
+    resetItem();
+  };
+
+  const resetItem = () => {
     setAmount(0);
     setOptions({});
     setOpen(false);
@@ -83,7 +87,10 @@ export const MenuItemDrawer = (props: menuItemDrawerProps) => {
       <SwipeableDrawer
         anchor="bottom"
         open={open}
-        onClose={() => setOpen(false)}
+        onClose={() => {
+          setOpen(false);
+          resetItem();
+        }}
         onOpen={() => setOpen(true)}
       >
         <Box height="fit" minHeight="90vh" maxHeight="90vh" overflow="scroll">
