@@ -16,13 +16,15 @@ export const useLoadingValue = <T,>() => {
     state: State.LOADING,
   });
 
-  const setLoadedValue = (value: T) => {
-    // console.log("setLoadingState", value);
+  const setLoadedValue = React.useCallback((value: T) => {
     setLoadingState({ state: State.SUCCESS, value: value });
-  };
+  }, []);
 
-  const setError = (message?: string) =>
-    setLoadingState({ state: State.ERROR, message: message ?? "" });
+  const setError = React.useCallback(
+    (message?: string) =>
+      setLoadingState({ state: State.ERROR, message: message ?? "" }),
+    []
+  );
 
   return {
     state: loadingState,

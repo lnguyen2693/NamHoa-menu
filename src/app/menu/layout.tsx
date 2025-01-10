@@ -21,7 +21,7 @@ const PublicLayout = (props: PublicLayoutProps) => {
   const table = Number(searchParams.get("table"));
   console.log("table ", table);
   return (
-    <OrdersProvider restaurantId="YhG2Rp1FVTHKIVfkDDO5">
+    <OrdersProvider restaurantId="YhG2Rp1FVTHKIVfkDDO5" admin={false}>
       <RestaurantProvider restaurantId="YhG2Rp1FVTHKIVfkDDO5">
         {table ? (
           <CartProvider cart={defaultOrder(table)}>{children}</CartProvider>

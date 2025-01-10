@@ -1,4 +1,3 @@
-import { Order } from "@interfaces/db";
 import {
   addDoc,
   collection,
@@ -7,15 +6,13 @@ import {
   DocumentReference,
   getDoc,
   getDocs,
-  PartialWithFieldValue,
+  query,
   updateDoc,
+  where,
 } from "firebase/firestore";
 import db from "../../../firebase";
 import { orderConverter } from "@services/firestore";
 import { IdentifiableOrder, IdentifiableOrders } from "@interfaces/type";
-
-// type addOrder = Pick<Order, "table" | "orderItems"> &
-//   PartialWithFieldValue<Order>;
 
 export const addOrder = async (
   order: IdentifiableOrder,
@@ -37,7 +34,6 @@ export const addOrder = async (
 export const updateOrder = async (
   order: IdentifiableOrder,
   restaurantID: string
-  // orderID: string
 ) => {
   const orderDoc: DocumentReference = doc(
     db,
@@ -63,19 +59,35 @@ export const getOrder = async (restaurantID: string, orderID: string) => {
   return { id: orderDoc.id, ...orderDoc.data() } as IdentifiableOrder;
 };
 
-export const getOrders = async (restaurantID: string) => {
-  const orderDocs = await getDocs(
-    collection(db, `restaurants/${restaurantID}/orders`).withConverter(
-      orderConverter
-    )
-  );
+export interface GetOrders {
+  restaurantId: string;
+  table?: number;
+  active?: boolean;
+}
 
-  const orders: IdentifiableOrders = orderDocs.docs.map((doc) => ({
+export const getOrdersQuery = (config: GetOrders) => {
+  const { restaurantId, table, active } = config;
+  const queries = [];
+
+  if (table) {
+    queries.push(where("table", "==", table));
+  }
+
+  if (active) {
+    queries.push(where("active", "==", true));
+  }
+
+  return query(
+    collection(db, `restaurants/${restaurantId}/orders`),
+    ...queries
+  ).withConverter(orderConverter);
+};
+
+export const getOrders = async (config: GetOrders) => {
+  return (await getDocs(getOrdersQuery(config))).docs.map((doc) => ({
     id: doc.id,
     ...doc.data(),
   }));
-
-  return orders;
 };
 
 export const deleteOrder = async (restaurantID: string, orderID: string) => {

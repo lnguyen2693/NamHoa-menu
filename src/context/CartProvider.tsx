@@ -1,7 +1,5 @@
 import { OrderItem } from "@interfaces/db";
 import { IdentifiableOrder } from "@interfaces/type";
-import { useCartLoader } from "hooks/useCartLoader";
-import { State } from "hooks/utils/useLoadingValue";
 import React from "react";
 
 interface CartProviderProps {
