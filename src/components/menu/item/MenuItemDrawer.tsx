@@ -1,9 +1,15 @@
 import React from "react";
-import { Button, styled, SwipeableDrawer } from "@mui/material";
+import {
+  Button,
+  Divider,
+  styled,
+  SwipeableDrawer,
+  Typography,
+} from "@mui/material";
 import { Global } from "@emotion/react";
 import { IoMdClose } from "react-icons/io";
 import { IdentifiableMenuItem } from "@interfaces/type";
-import { Box, margin, padding, width } from "@mui/system";
+import { Box, margin, padding, Stack, width } from "@mui/system";
 import { SingleChoice } from "./itemOptions/SingleChoice";
 import { IoMdAdd } from "react-icons/io";
 import { IoMdRemove } from "react-icons/io";
@@ -12,6 +18,7 @@ import { LuDot } from "react-icons/lu";
 import { addItemToCart } from "utils/Order";
 import { CartContext } from "@context/CartProvider";
 import { useSearchParams } from "next/navigation";
+import { formatPriceInVnd } from "utils/string";
 
 interface menuItemDrawerProps {
   menuItem: IdentifiableMenuItem;
@@ -64,7 +71,7 @@ export const MenuItemDrawer = (props: menuItemDrawerProps) => {
       (key) => options[key] == undefined || options[key].length === 0
     );
     setAddButton(unsatisfied.length !== 0 || amount === 0 || table === null);
-  }, [amount, options]);
+  }, [amount, options, requirement, table]);
 
   return (
     <Box style={{ position: "absolute", zIndex: "1", bottom: 8, right: 7 }}>
@@ -103,26 +110,25 @@ export const MenuItemDrawer = (props: menuItemDrawerProps) => {
               backgroundRepeat: "no-repeat",
               backgroundPosition: "center",
             }}
-          ></Box>
-          <Box
-            style={{
-              width: "fit",
-              height: "100%",
-              // backgroundColor: pink[50],
-              margin: 13,
-              paddingBottom: 150,
-            }}
-          >
-            <Box style={{ fontSize: "2rem" }}>{props.menuItem.name}</Box>
-            <Box>
-              {/* {props.menuItem.price} */}
-              {props.menuItem.price.toLocaleString("en-US", {
-                style: "currency",
-                currency: "VND",
-              })}
-            </Box>
-
-            <Box style={{ display: "flexbox" }}>
+          />
+          <Box height="100%" marginTop="16px" marginX="17px">
+            <Typography
+              variant="h4"
+              color="#000000DE"
+              fontWeight={700}
+              fontSize={34}
+            >
+              {menuItem.name}
+            </Typography>
+            <Typography color="#000000DE" fontWeight={400} marginTop="8px">
+              {formatPriceInVnd(menuItem)}
+            </Typography>
+            <Stack
+              marginTop="16px"
+              direction="column"
+              spacing="16px"
+              divider={<Divider color="#D4D4D4" orientation="horizontal" />}
+            >
               {Object.keys(props.menuItem.options)
                 .sort((a, b) => a.localeCompare(b))
                 .map((key) =>
@@ -133,7 +139,7 @@ export const MenuItemDrawer = (props: menuItemDrawerProps) => {
                       option={props.menuItem.options[key]}
                       allOptions={options}
                       addOptions={addOptions}
-                    ></MultipleChoice>
+                    />
                   ) : (
                     <SingleChoice
                       key={key}
@@ -144,7 +150,7 @@ export const MenuItemDrawer = (props: menuItemDrawerProps) => {
                     />
                   )
                 )}
-            </Box>
+            </Stack>
           </Box>
           <button
             style={{
@@ -160,6 +166,7 @@ export const MenuItemDrawer = (props: menuItemDrawerProps) => {
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
+              zIndex: 100,
             }}
             onClick={() => {
               setAmount(0);
@@ -167,7 +174,7 @@ export const MenuItemDrawer = (props: menuItemDrawerProps) => {
               setOpen(false);
             }}
           >
-            <IoMdClose size={25} />
+            <IoMdClose size={25} color="#0000008F" />
           </button>
           <Box
             bottom={0}
@@ -232,18 +239,18 @@ export const MenuItemDrawer = (props: menuItemDrawerProps) => {
               variant="contained"
               color="secondary"
               disabled={addButton}
+              sx={{ boxShadow: 6, paddingY: "12px" }}
               style={{
                 textTransform: "initial",
                 borderRadius: 100,
-                fontSize: 18,
               }}
               onClick={() => handleAddItem()}
             >
-              Them {amount} vao gio hang <LuDot />
-              {(props.menuItem.price * amount).toLocaleString("en-US", {
-                style: "currency",
-                currency: "VND",
-              })}
+              <Typography display="flex" fontSize={14} fontWeight={500}>
+                Thêm {amount} vào giỏ hàng{" "}
+                <LuDot style={{ alignSelf: "end" }} />{" "}
+                {formatPriceInVnd(menuItem)}
+              </Typography>
             </Button>
           </Box>
         </Box>

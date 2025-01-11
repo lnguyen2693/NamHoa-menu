@@ -5,6 +5,7 @@ import {
   ToggleButton,
   ToggleButtonGroup,
   toggleButtonGroupClasses,
+  Typography,
 } from "@mui/material";
 import React from "react";
 
@@ -16,17 +17,28 @@ interface MultipleChoiceProps {
 }
 
 const StyledToggleButtonGroup = styled(ToggleButtonGroup)({
+  display: "flex",
+  flexDirection: "row",
+  columnGap: "16px",
+  marginTop: "8px",
   [`& .${toggleButtonGroupClasses.grouped}`]: {
-    margin: 10,
-    border: 0,
-    borderRadius: 3,
+    border: "1px solid",
+    borderColor: "#A3A3A3",
+    borderRadius: 6,
     textTransform: "none",
   },
 });
 
 const StylesToggleButton = styled(ToggleButton)({
-  border: 1,
-  borderColor: "black",
+  borderColor: "#A3A3A3",
+  color: "#000000DE",
+  fontWeight: 500,
+  minWidth: "72px",
+  "&.Mui-selected, &.Mui-selected:hover": {
+    color: "white",
+    backgroundColor: "#2E3A85",
+    border: "0px",
+  },
 });
 
 export const MultipleChoice = (props: MultipleChoiceProps) => {
@@ -41,10 +53,15 @@ export const MultipleChoice = (props: MultipleChoiceProps) => {
 
   return (
     <Box>
-      <Box display="flex" gap={0.5}>
+      <Typography
+        display="flex"
+        gap={0.5}
+        color="#00000099"
+        fontWeight={500}
+        fontSize={14}
+      >
         {keyItem} {option.required ? <Box color="red">*</Box> : <></>}
-      </Box>
-
+      </Typography>
       <StyledToggleButtonGroup
         color="secondary"
         value={allOptions[keyItem] ?? []}

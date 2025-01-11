@@ -12,21 +12,32 @@ interface SingleChoiceProps {
   keyItem: string;
   option: ItemOption["key"];
   allOptions: Record<string, string[]>;
-  addOptions: (key: string, choices: string[]) => void
+  addOptions: (key: string, choices: string[]) => void;
 }
 
 const StyledToggleButtonGroup = styled(ToggleButtonGroup)({
+  display: "flex",
+  flexDirection: "row",
+  columnGap: "16px",
+  marginTop: "8px",
   [`& .${toggleButtonGroupClasses.grouped}`]: {
-    margin: 10,
-    border: 0,
-    borderRadius: 3,
+    border: "1px solid",
+    borderColor: "#A3A3A3",
+    borderRadius: 6,
     textTransform: "none",
   },
 });
 
 const StylesToggleButton = styled(ToggleButton)({
-  border: 1,
-  borderColor: "black",
+  borderColor: "#A3A3A3",
+  color: "#000000DE",
+  fontWeight: 500,
+  minWidth: "72px",
+  "&.Mui-selected, &.Mui-selected:hover": {
+    color: "white",
+    backgroundColor: "#2E3A85",
+    border: "0px",
+  },
 });
 
 export const SingleChoice = (props: SingleChoiceProps) => {

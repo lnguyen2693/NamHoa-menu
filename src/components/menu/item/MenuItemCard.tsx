@@ -4,6 +4,7 @@ import { Card, Paper, Typography } from "@mui/material";
 import { MenuItemDrawer } from "./MenuItemDrawer";
 import { Box, styled } from "@mui/system";
 import Image from "next/image";
+import { formatPriceInVnd } from "utils/string";
 
 interface menuItemCardProps {
   menuItem: IdentifiableMenuItem;
@@ -18,15 +19,7 @@ const CustomCard = styled(Card)({
 
 const MenuItemCard = (props: menuItemCardProps) => {
   const { menuItem } = props;
-  const priceInVnd = new Intl.NumberFormat("vi-VN", {
-    style: "currency",
-    currency: "VND",
-    currencyDisplay: "code",
-  })
-    .format(menuItem.price)
-    .replace("VND", "");
 
-  console.log(menuItem.image);
   return (
     <Box>
       <CustomCard elevation={4}>
@@ -59,7 +52,7 @@ const MenuItemCard = (props: menuItemCardProps) => {
           fontSize="14px"
         >
           <Typography fontWeight={500}>{menuItem.name}</Typography>
-          <Typography>{priceInVnd}đ</Typography>
+          <Typography>{formatPriceInVnd(menuItem)}</Typography>
         </Box>
       </Box>
     </Box>
