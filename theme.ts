@@ -1,18 +1,18 @@
 "use client";
 import { createTheme } from "@mui/material/styles";
-import { Roboto } from 'next/font/google'
- 
+import { Roboto } from "next/font/google";
+
 const roboto = Roboto({
   weight: ["100", "300", "400", "500", "700", "900"],
-  subsets: ['latin'],
+  subsets: ["latin"],
   // display: 'swap',
-})
+});
 
 export const theme = createTheme({
   palette: {
     primary: {
       main: "#BD1E2D",
-      light: "#fae2e4"
+      light: "#fae2e4",
     },
     secondary: {
       main: "#2E3A85",

@@ -10,15 +10,15 @@ import {
   CardMedia,
   Paper,
 } from "@mui/material";
-import { Box, flexbox } from "@mui/system";
+import { Box } from "@mui/system";
 import React from "react";
-import { IoMdSearch } from "react-icons/io";
 import { FaShoppingCart } from "react-icons/fa";
 import { MdOutlineMenuBook } from "react-icons/md";
 import { useRouter, useSearchParams } from "next/navigation";
 import { FaBell } from "react-icons/fa";
 import { Footer } from "@components/LayOut";
 import CartDrawer from "@components/cart/CartDrawer";
+import { CartContext } from "@context/CartProvider";
 
 export default function Menu() {
   const router = useRouter();
@@ -27,7 +27,8 @@ export default function Menu() {
 
   const [openCart, setOpenCart] = React.useState(false);
   const restaurantContext = React.useContext(RestaurantContext);
-  const ordersListContext = React.useContext(OrdersContext);
+  const { orders } = React.useContext(OrdersContext);
+  const { cart } = React.useContext(CartContext);
 
   return (
     <Box
@@ -83,12 +84,8 @@ export default function Menu() {
       </Box>
       <Box display="flex" flexDirection="column" rowGap={10}>
         <Footer />
-        {table ? (
+        {table && (
           <>
-            <CartDrawer
-              openCart={openCart}
-              setOpenCart={setOpenCart}
-            ></CartDrawer>
             <Paper
               sx={{
                 position: "fixed",
@@ -99,29 +96,23 @@ export default function Menu() {
               }}
               elevation={3}
             >
-              <BottomNavigation
-                showLabels
-                value={openCart ? 1 : 0}
-                onChange={(event, newValue) => {
-                  setOpenCart(newValue === 1);
-                  console.log("open cart: ", newValue === 1);
-                }}
-              >
+              <BottomNavigation showLabels value={openCart ? 1 : 0}>
                 <BottomNavigationAction
                   label="Menu"
                   icon={<MdOutlineMenuBook size={23} />}
                 />
                 <BottomNavigationAction
                   label="Giỏ hàng"
+                  disabled={cart.orderItems.length === 0}
                   icon={<FaShoppingCart size={23} />}
+                  onClick={() => setOpenCart(true)}
                 />
               </BottomNavigation>
             </Paper>
           </>
-        ) : (
-          <></>
         )}
       </Box>
+      <CartDrawer openCart={openCart} setOpenCart={setOpenCart} />
     </Box>
   );
 }

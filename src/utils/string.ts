@@ -1,6 +1,6 @@
-import { MenuItem } from "@interfaces/db";
+import { MenuItem, OrderItem } from "@interfaces/db";
 
-export const formatPriceInVnd = (item: MenuItem) => {
+export const formatPriceInVnd = (item: MenuItem | OrderItem) => {
   const priceInVnd = new Intl.NumberFormat("vi-VN", {
     style: "currency",
     currency: "VND",
