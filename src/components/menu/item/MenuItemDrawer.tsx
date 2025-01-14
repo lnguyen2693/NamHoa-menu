@@ -1,15 +1,8 @@
 import React from "react";
-import {
-  Button,
-  Divider,
-  styled,
-  SwipeableDrawer,
-  Typography,
-} from "@mui/material";
-import { Global } from "@emotion/react";
+import { Button, Divider, SwipeableDrawer, Typography } from "@mui/material";
 import { IoMdClose } from "react-icons/io";
 import { IdentifiableMenuItem } from "@interfaces/type";
-import { Box, margin, padding, Stack, width } from "@mui/system";
+import { Box, Stack } from "@mui/system";
 import { SingleChoice } from "./itemOptions/SingleChoice";
 import { IoMdAdd } from "react-icons/io";
 import { IoMdRemove } from "react-icons/io";
@@ -74,7 +67,14 @@ export const MenuItemDrawer = (props: menuItemDrawerProps) => {
   }, [amount, options, requirement, table]);
 
   return (
-    <Box style={{ position: "absolute", zIndex: "1", bottom: 8, right: 7 }}>
+    <Box
+      style={{
+        position: "absolute",
+        zIndex: "1",
+        bottom: 8,
+        right: 7,
+      }}
+    >
       <button
         style={{
           width: "2.5rem",
@@ -123,34 +123,36 @@ export const MenuItemDrawer = (props: menuItemDrawerProps) => {
             <Typography color="#000000DE" fontWeight={400} marginTop="8px">
               {formatPriceInVnd(menuItem)}
             </Typography>
-            <Stack
-              marginTop="16px"
-              direction="column"
-              spacing="16px"
-              divider={<Divider color="#D4D4D4" orientation="horizontal" />}
-            >
-              {Object.keys(props.menuItem.options)
-                .sort((a, b) => a.localeCompare(b))
-                .map((key) =>
-                  props.menuItem.options[key].multipleChoice ? (
-                    <MultipleChoice
-                      key={key}
-                      keyItem={key}
-                      option={props.menuItem.options[key]}
-                      allOptions={options}
-                      addOptions={addOptions}
-                    />
-                  ) : (
-                    <SingleChoice
-                      key={key}
-                      keyItem={key}
-                      option={props.menuItem.options[key]}
-                      allOptions={options}
-                      addOptions={addOptions}
-                    />
-                  )
-                )}
-            </Stack>
+            <Box sx={{ paddingBottom: 20 }}>
+              <Stack
+                marginTop="16px"
+                direction="column"
+                spacing="16px"
+                divider={<Divider color="#D4D4D4" orientation="horizontal" />}
+              >
+                {Object.keys(props.menuItem.options)
+                  .sort((a, b) => a.localeCompare(b))
+                  .map((key) =>
+                    props.menuItem.options[key].multipleChoice ? (
+                      <MultipleChoice
+                        key={key}
+                        keyItem={key}
+                        option={props.menuItem.options[key]}
+                        allOptions={options}
+                        addOptions={addOptions}
+                      />
+                    ) : (
+                      <SingleChoice
+                        key={key}
+                        keyItem={key}
+                        option={props.menuItem.options[key]}
+                        allOptions={options}
+                        addOptions={addOptions}
+                      />
+                    )
+                  )}
+              </Stack>
+            </Box>
           </Box>
           <button
             style={{
@@ -176,6 +178,7 @@ export const MenuItemDrawer = (props: menuItemDrawerProps) => {
           >
             <IoMdClose size={25} color="#0000008F" />
           </button>
+
           <Box
             bottom={0}
             right={0}
@@ -185,10 +188,11 @@ export const MenuItemDrawer = (props: menuItemDrawerProps) => {
             flexDirection="column"
             alignItems="center"
             justifyContent="center"
-            boxShadow={2}
+            boxShadow={3}
             padding={2}
             gap={2}
             fontSize={16}
+            sx={{ bgcolor: "white" }}
           >
             <Box style={{ display: "flex", gap: 5 }}>
               <button
