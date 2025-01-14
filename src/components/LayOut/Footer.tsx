@@ -9,7 +9,7 @@ const Footer = () => {
   const context = React.useContext(RestaurantContext);
 
   return (
-    <Card style={{ padding: "10px" }}>
+    <Card style={{ padding: "0 10px 96px" }}>
       <CardMedia
         component="img"
         image="/nam-hoa-footer-img.png"
