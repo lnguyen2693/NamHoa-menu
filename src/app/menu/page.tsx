@@ -85,10 +85,7 @@ export default function Menu() {
         <Footer />
         {table ? (
           <>
-            <CartDrawer
-              openCart={openCart}
-              setOpenCart={setOpenCart}
-            ></CartDrawer>
+            <CartDrawer openCart={openCart} setOpenCart={setOpenCart} />
             <Paper
               sx={{
                 position: "fixed",
@@ -118,9 +115,7 @@ export default function Menu() {
               </BottomNavigation>
             </Paper>
           </>
-        ) : (
-          <></>
-        )}
+        ) : null}
       </Box>
     </Box>
   );
