@@ -11,16 +11,15 @@ interface useRestaurantLoaderProps {
 }
 
 export const useRestaurantLoader = (props: useRestaurantLoaderProps) => {
+  const { restaurantId } = props;
   const { state, setValue, setError } =
     useLoadingValue<IdentifiableRestaurant>();
   const unsubscriber = React.useRef<Unsubscribe | null>(null);
 
   // fetch restaurant context
   React.useEffect(() => {
-    getRestaurant(props.restaurantId).then((value) => {
-      setValue(value);
-    });
-  }, []);
+    getRestaurant(restaurantId).then(setValue);
+  }, [restaurantId, setValue]);
 
   React.useEffect(() => {
     if (state.state !== State.SUCCESS) {
@@ -32,13 +31,11 @@ export const useRestaurantLoader = (props: useRestaurantLoaderProps) => {
     }
 
     const unsubscribe = onSnapshot(
-      doc(db, `restaurants/${props.restaurantId}`).withConverter(
-        restaurantConverter
-      ),
+      doc(db, `restaurants/${restaurantId}`).withConverter(restaurantConverter),
       (snapshot) => {
         if (snapshot.exists()) {
           setValue({
-            id: props.restaurantId,
+            id: restaurantId,
             ...snapshot.data(),
           } as IdentifiableRestaurant);
         }
@@ -48,7 +45,7 @@ export const useRestaurantLoader = (props: useRestaurantLoaderProps) => {
     unsubscriber.current = unsubscribe;
 
     return () => unsubscribe();
-  }, [state.state]);
+  }, [state.state, restaurantId, setValue]);
 
   return { restaurant: state };
 };

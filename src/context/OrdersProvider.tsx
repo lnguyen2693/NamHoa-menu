@@ -1,11 +1,13 @@
 import { IdentifiableOrders } from "@interfaces/type";
 import { useOrdersLoader } from "hooks/useOrdersLoader";
 import { State } from "hooks/utils/useLoadingValue";
+import { useSearchParams } from "next/navigation";
 import React from "react";
 
-interface ordersProviderProps {
+interface OrdersProviderProps {
   children?: React.ReactNode;
   restaurantId: string;
+  admin: boolean;
 }
 
 interface OdersContext {
@@ -16,9 +18,14 @@ export const OrdersContext = React.createContext({} as OdersContext);
 
 const Provider = OrdersContext.Provider;
 
-const OrdersProvider = (props: ordersProviderProps) => {
-  const { restaurantId } = props;
-  const { orders } = useOrdersLoader({ restaurantId: restaurantId });
+const OrdersProvider = (props: OrdersProviderProps) => {
+  const { restaurantId, admin } = props;
+  const searchParams = useSearchParams();
+  const { orders } = useOrdersLoader({
+    restaurantId,
+    table: admin ? undefined : Number(searchParams.get("table")) || undefined,
+    active: true,
+  });
 
   if (orders.state == State.SUCCESS) {
     return (

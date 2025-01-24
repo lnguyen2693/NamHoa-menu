@@ -9,7 +9,7 @@ const AdminLayout = ({
   children: React.ReactNode;
 }) => {
   return (
-    <OrdersProvider restaurantId="YhG2Rp1FVTHKIVfkDDO5">
+    <OrdersProvider restaurantId="YhG2Rp1FVTHKIVfkDDO5" admin>
       <RestaurantProvider restaurantId="YhG2Rp1FVTHKIVfkDDO5">
         {/* <CartProvider> */}
         {children}

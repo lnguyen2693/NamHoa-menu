@@ -2,7 +2,7 @@ import { IdentifiableMenuItem, IdentifiableMenuItems } from "@interfaces/type";
 import { State, useLoadingValue } from "./utils/useLoadingValue";
 import React from "react";
 import { getMenuItems } from "@services/client/menu";
-import { collection, onSnapshot, Unsubscribe } from "firebase/firestore";
+import { collection, doc, onSnapshot, Unsubscribe } from "firebase/firestore";
 import db from "../../firebase";
 import { menuItemConverter } from "@services/firestore";
 
@@ -11,16 +11,15 @@ interface useMenuItemsLoaderProps {
 }
 
 export const useMenuItemsLoader = (props: useMenuItemsLoaderProps) => {
+  const { restaurantId } = props;
   const { state, setValue, setError } =
     useLoadingValue<IdentifiableMenuItems>();
   const unsubscriber = React.useRef<Unsubscribe | null>(null);
 
   // fetch data
   React.useEffect(() => {
-    getMenuItems(props.restaurantId).then((value) => {
-      setValue(value);
-    });
-  }, []);
+    getMenuItems(restaurantId).then(setValue);
+  }, [restaurantId, setValue]);
 
   // onSnapshot
   React.useEffect(() => {
@@ -33,31 +32,17 @@ export const useMenuItemsLoader = (props: useMenuItemsLoaderProps) => {
     }
 
     const unsubscribe = onSnapshot(
-      collection(db, `restaurants/${props.restaurantId}/menu`).withConverter(
+      collection(db, `restaurants/${restaurantId}/menu`).withConverter(
         menuItemConverter
       ),
-      (snapshot) => {
-        // https://stackoverflow.com/questions/74570835/how-to-do-dynamic-routes-with-nextjs-13
-        // https://nextjs.org/docs/app/building-your-application/routing/dynamic-routes
-        // MenuItem component
-        // Think about url design
-        let menuItemsList: IdentifiableMenuItems = [];
-        snapshot.docs.map((menuItem) => {
-          menuItemsList.push({
-            id: menuItem.id,
-            ...menuItem.data(),
-          } as IdentifiableMenuItem);
-        });
-
-        // console.log(menuItemsList)
-        setValue(menuItemsList);
-      }
+      (snapshot) =>
+        setValue(snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() })))
     );
 
     unsubscriber.current = unsubscribe;
 
     return () => unsubscribe();
-  }, [state.state]);
+  }, [state.state, restaurantId, setValue]);
 
   return { menuItems: state };
 };
